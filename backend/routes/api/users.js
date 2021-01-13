@@ -71,12 +71,11 @@ router.post("/users/login", (req, res, next) => {
 });
 
 /**
- * GET /account
- * Profile page.
+ * GET /users/account
+ * Get all info about signed in account.
  */
-
 router.get("/users/account", auth.required, (req, res, next) => {
-  User.deleteOne({ _id: req.payload.id })
+  User.findOne({ _id: req.payload.id })
     .then((user) => {
       if (!user) {
         return res.sendStatus(401);
@@ -88,14 +87,44 @@ router.get("/users/account", auth.required, (req, res, next) => {
 });
 
 /**
- * POST /account/profile
- * Update profile information.
+ * POST /users/account
+ * Update account information.
  */
+router.put("/users/account", auth.required, (req, res, next) => {
+  User.findById(req.payload.id)
+    .then((user) => {
+      if (!user) {
+        return res.sendStatus(401);
+      }
 
-/**
- * POST /account/password
- * Update current password.
- */
+      // only update fields that were actually passed...
+      if (typeof req.body.user.username !== "undefined") {
+        user.username = req.body.user.username;
+      }
+
+      if (typeof req.body.user.email !== "undefined") {
+        if (!validator.isEmail(req.body.user.email)) {
+          return res
+            .status(422)
+            .json({ errors: { email: "enter a valid email address." } });
+        }
+        user.email = req.body.user.email;
+      }
+
+      const { profile } = req.body.user;
+      if (typeof profile !== "undefined") {
+        for (let key in profile) {
+          user.profile[key] = profile[key];
+          console.log(key, profile[key]);
+        }
+      }
+
+      return user.save().then((user) => {
+        return res.json({ user: user.toAuthJSON() });
+      });
+    })
+    .catch(next);
+});
 
 /**
  * POST /users/account/delete
@@ -103,11 +132,10 @@ router.get("/users/account", auth.required, (req, res, next) => {
  */
 router.post("/users/account/delete", auth.required, (req, res, next) => {
   User.deleteOne({ _id: req.payload.id })
-    .then((user) => {
+    .then(() => {
       return res.status(200).json({
         success: {
           message: "your account has been deleted.",
-          user: user.toAuthJSON(),
         },
       });
     })
