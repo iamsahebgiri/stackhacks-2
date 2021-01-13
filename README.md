@@ -72,4 +72,4 @@ Develop a pseudo full-stack app for Office cafeteria
 ### Backend
 
 - [ ] ExpressJS
-- [ ] ORM - Mangoose
+- [ ] ORM - Mongoose
