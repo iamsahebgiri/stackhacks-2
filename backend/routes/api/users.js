@@ -75,6 +75,18 @@ router.post("/users/login", (req, res, next) => {
  * Profile page.
  */
 
+router.get("/users/account", auth.required, (req, res, next) => {
+  User.deleteOne({ _id: req.payload.id })
+    .then((user) => {
+      if (!user) {
+        return res.sendStatus(401);
+      }
+
+      return res.json({ account: user.toAuthJSON() });
+    })
+    .catch(next);
+});
+
 /**
  * POST /account/profile
  * Update profile information.
@@ -91,10 +103,13 @@ router.post("/users/login", (req, res, next) => {
  */
 router.post("/users/account/delete", auth.required, (req, res, next) => {
   User.deleteOne({ _id: req.payload.id })
-    .then(() => {
-      return res
-        .status(200)
-        .json({ success: { message: "your account has been deleted." } });
+    .then((user) => {
+      return res.status(200).json({
+        success: {
+          message: "your account has been deleted.",
+          user: user.toAuthJSON(),
+        },
+      });
     })
     .catch(next);
 });

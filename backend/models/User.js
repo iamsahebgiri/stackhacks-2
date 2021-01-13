@@ -23,13 +23,18 @@ const UserSchema = new mongoose.Schema(
       match: [/\S+@\S+\.\S+/, "email is invalid."],
       index: true,
     },
-
-    bio: String,
-    image: String,
+    password: String,
 
     favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Item" }],
 
-    password: String,
+    profile: {
+      name: String,
+      bio: String,
+      gender: String,
+      location: String,
+      website: String,
+      picture: String,
+    }
   },
   { timestamps: true }
 );
@@ -92,8 +97,7 @@ UserSchema.methods.toAuthJSON = function () {
     username: this.username,
     email: this.email,
     token: this.generateJWT(),
-    bio: this.bio,
-    image: this.image,
+    profile: this.profile
   };
 };
 
