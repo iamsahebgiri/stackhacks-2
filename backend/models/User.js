@@ -31,9 +31,11 @@ const UserSchema = new mongoose.Schema(
       name: String,
       bio: String,
       gender: String,
-      location: String,
-      website: String,
       picture: String,
+      employee_id: String,
+      organization: String,
+      mobile_no: String,
+      identity_card: String,
     }
   },
   { timestamps: true }
