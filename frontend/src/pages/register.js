@@ -1,7 +1,6 @@
 import React from "react";
 import Link from "next/link";
 import { Field, Form, Formik } from "formik";
-import * as Yup from "yup";
 import {
   Box,
   Button,
@@ -18,28 +17,11 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import clsx from "clsx";
 import { Icon } from "@chakra-ui/react";
 import { IoCheckmarkCircle } from "react-icons/io5";
+import SignupSchema from "../../Schema/SignupSchema";
 import { Container } from "../components/Container";
 
-const SignupSchema = Yup.object().shape({
-  username: Yup.string().required("Username can't be blank."),
-  email: Yup.string()
-    .lowercase("Email has to all lowercase.")
-    .email("Enter a valid email address.")
-    .required("Email can't be blank."),
-  password: Yup.string()
-    .required("Password can't be blank")
-    .min(8, "Password must be at least 8 characters long."),
-  confirmPassword: Yup.string().test(
-    "passwords-match",
-    "Passwords do not match.",
-    function (value) {
-      return this.parent.password === value;
-    }
-  ),
-});
 
 const SignupForm = () => {
   const [show, setShow] = React.useState(false);
@@ -47,20 +29,30 @@ const SignupForm = () => {
 
   const [isEmployee, setIsEmployee] = React.useState(true);
 
+  React.useEffect(() => {
+    
+  }, []);
+
   return (
     <Formik
       initialValues={{
-        username: "",
+        name: "",
         email: "",
         password: "",
-        confirmPassword: "",
       }}
       validationSchema={SignupSchema}
       onSubmit={(values, actions) => {
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
-          actions.setSubmitting(false);
-        }, 1000);
+        // setTimeout(() => {
+        //   alert(
+        //     JSON.stringify(
+        //       { ...values, userType: isEmployee ? "employee" : "vendor" },
+        //       null,
+        //       2
+        //     )
+        //   );
+        //   actions.setSubmitting(false);
+        // }, 1000);
+
       }}
     >
       {(props) => (
@@ -87,9 +79,9 @@ const SignupForm = () => {
                   userSelect="none"
                 >
                   <Text>Employee</Text>
-                  {isEmployee ? <Icon as={IoCheckmarkCircle} color="teal.400" /> : (
-                    null
-                  )}
+                  {isEmployee ? (
+                    <Icon as={IoCheckmarkCircle} color="teal.400" />
+                  ) : null}
                 </Box>
                 <Box
                   bg={isEmployee ? "gray.100" : "teal.50"}
@@ -107,22 +99,27 @@ const SignupForm = () => {
                   userSelect="none"
                 >
                   <Text>Vendor</Text>
-                  {isEmployee ? (
-                    null
-                  ) : <Icon as={IoCheckmarkCircle} color="teal.400" />}
+                  {isEmployee ? null : (
+                    <Icon as={IoCheckmarkCircle} color="teal.400" />
+                  )}
                 </Box>
               </Stack>
             </Box>
 
-            <Field name="username">
+            <Field name="name">
               {({ field, form }) => (
                 <FormControl
-                  isInvalid={form.errors.username && form.touched.username}
+                  isInvalid={form.errors.name && form.touched.name}
                   isRequired
                 >
-                  <FormLabel htmlFor="username">Username</FormLabel>
-                  <Input {...field} id="username" placeholder="iamsahebgiri" />
-                  <FormErrorMessage>{form.errors.username}</FormErrorMessage>
+                  <FormLabel htmlFor="name">Name</FormLabel>
+                  <Input
+                    {...field}
+                    id="name"
+                    placeholder="Saheb Giri"
+                    focusBorderColor="teal.500"
+                  />
+                  <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                 </FormControl>
               )}
             </Field>
@@ -137,72 +134,48 @@ const SignupForm = () => {
                     {...field}
                     id="email"
                     placeholder="iamsahebgiri@gmail.com"
+                    focusBorderColor="teal.500"
                   />
                   <FormErrorMessage>{form.errors.email}</FormErrorMessage>
                 </FormControl>
               )}
             </Field>
-            <Stack direction={["column", "row"]}>
-              <Field name="password">
-                {({ field, form }) => (
-                  <FormControl
-                    isInvalid={form.errors.password && form.touched.password}
-                    isRequired
-                  >
-                    <FormLabel htmlFor="password">Password</FormLabel>
-                    <InputGroup size="md">
-                      <Input
-                        {...field}
-                        id="password"
-                        pr="4.5rem"
-                        type={show ? "text" : "password"}
-                        placeholder="Enter password"
-                      />
-                      <InputRightElement width="4.5rem">
-                        <Button h="1.75rem" size="sm" onClick={handleClick}>
-                          {show ? "Hide" : "Show"}
-                        </Button>
-                      </InputRightElement>
-                    </InputGroup>
-
-                    <FormErrorMessage>{form.errors.password}</FormErrorMessage>
-                  </FormControl>
-                )}
-              </Field>
-              <Field name="confirmPassword">
-                {({ field, form }) => (
-                  <FormControl
-                    isInvalid={
-                      form.errors.confirmPassword &&
-                      form.touched.confirmPassword
-                    }
-                    isRequired
-                  >
-                    <FormLabel htmlFor="confirmPassword">
-                      Confirm Password
-                    </FormLabel>
+            <Field name="password">
+              {({ field, form }) => (
+                <FormControl
+                  isInvalid={form.errors.password && form.touched.password}
+                  isRequired
+                >
+                  <FormLabel htmlFor="password">Password</FormLabel>
+                  <InputGroup size="md">
                     <Input
                       {...field}
-                      id="confirmPassword"
+                      id="password"
+                      pr="4.5rem"
                       type={show ? "text" : "password"}
-                      placeholder="Retype your password"
+                      placeholder="Enter password"
+                      focusBorderColor="teal.500"
                     />
-                    <FormErrorMessage>
-                      {form.errors.confirmPassword}
-                    </FormErrorMessage>
-                  </FormControl>
-                )}
-              </Field>
-            </Stack>
+                    <InputRightElement width="4.5rem">
+                      <Button h="1.75rem" size="sm" onClick={handleClick} bou>
+                        {show ? "Hide" : "Show"}
+                      </Button>
+                    </InputRightElement>
+                  </InputGroup>
+
+                  <FormErrorMessage>{form.errors.password}</FormErrorMessage>
+                </FormControl>
+              )}
+            </Field>
           </Stack>
           <Flex>
             <Spacer />
             <Button
               mt={[6, 12]}
-              colorScheme="green"
+              colorScheme="teal"
               isLoading={props.isSubmitting}
               type="submit"
-              width={["100%","40%"]}
+              width="100%"
             >
               Register
             </Button>
@@ -225,14 +198,20 @@ const SignUp = () => {
         bgSize="cover"
         bgImg="url('https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=100')"
       />
-      <Box width={["100%", "50%"]} p={["4", "16"]}>
-        <Box>
+      <Box
+        width={["100%", "50%"]}
+        px={["4"]}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Box width="md">
           <Heading mb="6">Register</Heading>
           <SignupForm />
-          <Text mt="3" mb="3">
+          <Text my="4" textAlign="center">
             Alredy have an account?{" "}
             <Link href="/login">
-              <UILink color="teal.500">Sign In</UILink>
+              <UILink color="teal.400">Sign In</UILink>
             </Link>
           </Text>
         </Box>

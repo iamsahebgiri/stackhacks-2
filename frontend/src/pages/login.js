@@ -61,6 +61,7 @@ const SigninForm = () => {
                     {...field}
                     id="email"
                     placeholder="iamsahebgiri@gmail.com"
+                    focusBorderColor="teal.500"
                   />
                   <FormErrorMessage>{form.errors.email}</FormErrorMessage>
                 </FormControl>
@@ -80,6 +81,7 @@ const SigninForm = () => {
                       pr="4.5rem"
                       type={show ? "text" : "password"}
                       placeholder="Enter password"
+                      focusBorderColor="teal.500"
                     />
                     <InputRightElement width="4.5rem">
                       <Button h="1.75rem" size="sm" onClick={handleClick}>
@@ -98,7 +100,7 @@ const SigninForm = () => {
             <Button
               mt={12}
               width="100%"
-              colorScheme="green"
+              colorScheme="teal"
               isLoading={props.isSubmitting}
               type="submit"
             >
@@ -114,14 +116,14 @@ const SigninForm = () => {
 const SignIn = () => {
   return (
     <Container height="100vh">
-      <Box width={["100%", "50%"]} p={["4", "32"]}>
-        <Box>
+      <Box width={["100%", "50%"]} px={["4"]} display="flex" alignItems="center" justifyContent="center">
+        <Box width="md">
           <Heading mb="6">Sign In</Heading>
           <SigninForm />
-          <Text>
+          <Text my="4" textAlign="center">
             Don't have an account?{" "}
             <Link href="/register">
-              <UILink color="teal.500">Register</UILink>
+              <UILink color="teal.400">Register</UILink>
             </Link>
           </Text>
         </Box>

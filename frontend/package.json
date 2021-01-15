@@ -1,6 +1,7 @@
 {
   "name": "office-cafeteria",
   "version": "0.1.0",
+  "description": "Frontend Built with next js",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -11,13 +12,17 @@
     "@chakra-ui/react": "^1.0.0",
     "@emotion/react": "^11.0.0",
     "@emotion/styled": "^11.0.0",
+    "@feathersjs/client": "^4.5.11",
+    "@feathersjs/feathers": "^4.5.11",
+    "@feathersjs/socketio-client": "^4.5.11",
     "clsx": "^1.1.1",
     "formik": "^2.2.6",
-    "framer-motion": "^2.9.4",
+    "framer-motion": "^3.0.0",
     "next": "latest",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
     "react-icons": "^4.1.0",
+    "socket.io-client": "^2.4.0",
     "yup": "^0.32.8"
   },
   "license": "MIT"
