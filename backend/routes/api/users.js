@@ -10,6 +10,7 @@ const User = mongoose.model("User");
  * Create a new local account.
  */
 router.post("/users/signup", (req, res, next) => {
+  const userType = ["employee", "vendor"];
   const errors = {};
 
   if (!validator.isEmail(req.body.user.email)) {
@@ -19,9 +20,9 @@ router.post("/users/signup", (req, res, next) => {
   if (!validator.isLength(req.body.user.password, { min: 8 })) {
     errors.password = "password must be at least 8 characters long.";
   }
-
-  if (req.body.user.password !== req.body.user.confirmPassword) {
-    errors.confirmPassword = "passwords do not match.";
+  
+  if(!userType.includes(req.body.user.userType)) {
+    errors.userType = "user can be either an employee or a vendor.";
   }
 
   if (Object.keys(errors).length) {
@@ -31,6 +32,7 @@ router.post("/users/signup", (req, res, next) => {
     username: req.body.user.username,
     email: req.body.user.email,
     password: req.body.user.password,
+    userType: req.body.user.userType,
   });
 
   user
@@ -47,12 +49,12 @@ router.post("/users/signup", (req, res, next) => {
  */
 router.post("/users/login", (req, res, next) => {
   if (!req.body.user.email) {
-    return res.status(422).json({ errors: { email: "email can't be blank." } });
+    return res.status(403).json({ errors: { email: "email can't be blank." } });
   }
 
   if (!req.body.user.password) {
     return res
-      .status(422)
+      .status(403)
       .json({ errors: { password: "password can't be blank." } });
   }
 
@@ -65,7 +67,7 @@ router.post("/users/login", (req, res, next) => {
       user.token = user.generateJWT();
       return res.json({ user: user.toAuthJSON() });
     } else {
-      return res.status(422).json(info);
+      return res.status(403).json(info);
     }
   })(req, res, next);
 });

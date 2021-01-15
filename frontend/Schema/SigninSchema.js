@@ -1,7 +1,6 @@
 import * as Yup from "yup";
 
-const SignupSchema = Yup.object().shape({
-  username: Yup.string().required("username can't be blank."),
+const SigninSchema = Yup.object().shape({
   email: Yup.string()
     .lowercase("Email has to all lowercase.")
     .email("Enter a valid email address.")
@@ -11,4 +10,4 @@ const SignupSchema = Yup.object().shape({
     .min(8, "Password must be at least 8 characters long."),
 });
 
-export default SignupSchema;
+export default SigninSchema;

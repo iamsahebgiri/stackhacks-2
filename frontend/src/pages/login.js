@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { Field, Form, Formik } from "formik";
-import * as Yup from "yup";
 import {
   Box,
   Button,
@@ -17,22 +17,17 @@ import {
   Text,
   Flex,
   Spacer,
+  createStandaloneToast
 } from "@chakra-ui/react";
+import axios from "axios";
 import { Container } from "../components/Container";
-
-const SigninSchema = Yup.object().shape({
-  email: Yup.string()
-    .lowercase("Email has to all lowercase.")
-    .email("Enter a valid email address.")
-    .required("Email can't be blank."),
-  password: Yup.string()
-    .required("Password can't be blank")
-    .min(8, "Password must be at least 8 characters long."),
-});
+import SigninSchema from "../../Schema/SigninSchema";
 
 const SigninForm = () => {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
+  const toast = createStandaloneToast();
+  const router = useRouter();
   return (
     <Formik
       initialValues={{
@@ -41,10 +36,33 @@ const SigninForm = () => {
       }}
       validationSchema={SigninSchema}
       onSubmit={(values, actions) => {
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
-          actions.setSubmitting(false);
-        }, 1000);
+        axios
+          .post("http://localhost:3030/api/users/login", {
+            user: {
+              ...values,
+            },
+          })
+          .then((response) => {
+            actions.setSubmitting(false);
+            console.log(response.data.user.token);
+            localStorage.setItem("token", response.data.user.token);
+            router.push("/home");
+          })
+          .catch((error) => {
+            const errors = error.response.data.errors;
+            for (let key in errors) {
+              toast({
+                position: "bottom-left",
+                title: "An error occurred.",
+                description: errors[key],
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+              })
+            }
+            
+            actions.setSubmitting(false);
+          });
       }}
     >
       {(props) => (
@@ -116,7 +134,13 @@ const SigninForm = () => {
 const SignIn = () => {
   return (
     <Container height="100vh">
-      <Box width={["100%", "50%"]} px={["4"]} display="flex" alignItems="center" justifyContent="center">
+      <Box
+        width={["100%", "50%"]}
+        px={["4"]}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
         <Box width="md">
           <Heading mb="6">Sign In</Heading>
           <SigninForm />

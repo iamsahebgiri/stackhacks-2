@@ -104,6 +104,8 @@ UserSchema.methods.toAuthJSON = function () {
   return {
     username: this.username,
     email: this.email,
+    userType: this.userType,
+    favorites: this.favorites,
     token: this.generateJWT(),
     profile: this.profile,
   };

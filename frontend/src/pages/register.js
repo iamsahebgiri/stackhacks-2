@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { Field, Form, Formik } from "formik";
 import {
   Box,
@@ -17,42 +18,61 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import axios from "axios";
 import { Icon } from "@chakra-ui/react";
 import { IoCheckmarkCircle } from "react-icons/io5";
 import SignupSchema from "../../Schema/SignupSchema";
 import { Container } from "../components/Container";
 
-
 const SignupForm = () => {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
+  const router = useRouter();
 
   const [isEmployee, setIsEmployee] = React.useState(true);
 
-  React.useEffect(() => {
-    
-  }, []);
+  React.useEffect(() => {}, []);
 
   return (
     <Formik
       initialValues={{
-        name: "",
+        username: "",
         email: "",
         password: "",
       }}
       validationSchema={SignupSchema}
       onSubmit={(values, actions) => {
-        // setTimeout(() => {
-        //   alert(
-        //     JSON.stringify(
-        //       { ...values, userType: isEmployee ? "employee" : "vendor" },
-        //       null,
-        //       2
-        //     )
-        //   );
-        //   actions.setSubmitting(false);
-        // }, 1000);
-
+        console.log({
+          ...values,
+          userType: isEmployee ? "employee" : "vendor",
+        });
+        axios
+          .post("http://localhost:3030/api/users/signup", {
+            user: {
+              ...values,
+              userType: isEmployee ? "employee" : "vendor",
+            },
+          })
+          .then((response) => {
+            actions.setSubmitting(false);
+            console.log(response.data.user.token);
+            localStorage.setItem("token", response.data.user.token);
+            router.push("/home");
+          })
+          .catch((error) => {
+            const errors = error.response.data.errors;
+            for (let key in errors) {
+              toast({
+                position: "bottom-right",
+                title: "An error occurred.",
+                description: errors[key],
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+              })
+            }
+            actions.setSubmitting(false);
+          });
       }}
     >
       {(props) => (
@@ -106,20 +126,20 @@ const SignupForm = () => {
               </Stack>
             </Box>
 
-            <Field name="name">
+            <Field name="username">
               {({ field, form }) => (
                 <FormControl
-                  isInvalid={form.errors.name && form.touched.name}
+                  isInvalid={form.errors.username && form.touched.username}
                   isRequired
                 >
-                  <FormLabel htmlFor="name">Name</FormLabel>
+                  <FormLabel htmlFor="username">Username</FormLabel>
                   <Input
                     {...field}
-                    id="name"
-                    placeholder="Saheb Giri"
+                    id="username"
+                    placeholder="iamsahebgiri"
                     focusBorderColor="teal.500"
                   />
-                  <FormErrorMessage>{form.errors.name}</FormErrorMessage>
+                  <FormErrorMessage>{form.errors.username}</FormErrorMessage>
                 </FormControl>
               )}
             </Field>
@@ -157,7 +177,7 @@ const SignupForm = () => {
                       focusBorderColor="teal.500"
                     />
                     <InputRightElement width="4.5rem">
-                      <Button h="1.75rem" size="sm" onClick={handleClick} bou>
+                      <Button h="1.75rem" size="sm" onClick={handleClick}>
                         {show ? "Hide" : "Show"}
                       </Button>
                     </InputRightElement>
