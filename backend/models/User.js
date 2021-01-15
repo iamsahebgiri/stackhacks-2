@@ -27,6 +27,12 @@ const UserSchema = new mongoose.Schema(
 
     favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Item" }],
 
+    userType: {
+      type: String,
+      enum: ["employee", "vendor"],
+      default: "employee",
+    },
+
     profile: {
       name: String,
       bio: String,
@@ -36,7 +42,7 @@ const UserSchema = new mongoose.Schema(
       organization: String,
       mobile_no: String,
       identity_card: String,
-    }
+    },
   },
   { timestamps: true }
 );
@@ -99,7 +105,7 @@ UserSchema.methods.toAuthJSON = function () {
     username: this.username,
     email: this.email,
     token: this.generateJWT(),
-    profile: this.profile
+    profile: this.profile,
   };
 };
 

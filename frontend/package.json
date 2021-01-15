@@ -1,5 +1,5 @@
 {
-  "name": "with-chakra-ui",
+  "name": "office-cafeteria",
   "version": "0.1.0",
   "scripts": {
     "dev": "next dev",
@@ -11,10 +11,14 @@
     "@chakra-ui/react": "^1.0.0",
     "@emotion/react": "^11.0.0",
     "@emotion/styled": "^11.0.0",
+    "clsx": "^1.1.1",
+    "formik": "^2.2.6",
     "framer-motion": "^2.9.4",
     "next": "latest",
     "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react-dom": "^17.0.1",
+    "react-icons": "^4.1.0",
+    "yup": "^0.32.8"
   },
   "license": "MIT"
 }
