@@ -11,6 +11,7 @@ import {
   MenuList,
   MenuDivider,
   Text,
+  Heading,
 } from "@chakra-ui/react";
 import NavItem from "./NavItem";
 import { RiHomeSmile2Fill } from "react-icons/ri";
@@ -64,9 +65,6 @@ function DashboardShell(props) {
       </Flex>
       <Flex width="224px" flexDir="column" py="4" height="100vh" bg="gray.100">
         <Box px="4">
-          <Text fontWeight="600" mb="6">
-            Personal
-          </Text>
           {navs.map((nav) => (
             <NavItem
               href={nav.href}

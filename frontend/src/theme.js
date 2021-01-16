@@ -2,7 +2,7 @@ import { extendTheme } from "@chakra-ui/react";
 import { createBreakpoints } from "@chakra-ui/theme-tools";
 
 const fonts = {
-  heading: "Inter, -apple-system,BlinkMacSystemFont, Helvetica,Arial,sans-serif",
+  heading: "Manrope, -apple-system,BlinkMacSystemFont, Helvetica,Arial,sans-serif",
   body: "Inter, -apple-system,BlinkMacSystemFont, Helvetica,Arial,sans-serif",
   mono: `'Roboto Mono','Menlo', monospace`,
 };
