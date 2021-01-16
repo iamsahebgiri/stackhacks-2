@@ -11,7 +11,7 @@ function Home() {
     }
   }, []);
 
-  return <div>Home</div>;
+  return <div>Loading...</div>;
 }
 
 export default Home;

@@ -1,4 +1,4 @@
-import isJWT from "validator";
+import { isJWT } from "validator";
 
 const isAuthenticted = () => {
   const token = localStorage.getItem("token");
