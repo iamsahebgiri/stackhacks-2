@@ -1,8 +1,11 @@
+import isJWT from "validator";
+
 const isAuthenticted = () => {
-    if(localStorage.getItem("token")) {
-        return true;
-    }
-    return false;
-}
+  const token = localStorage.getItem("token");
+  if (token && isJWT(token)) {
+    return true;
+  }
+  return false;
+};
 
 export default isAuthenticted;

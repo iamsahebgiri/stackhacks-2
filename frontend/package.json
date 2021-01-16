@@ -20,6 +20,7 @@
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "react-icons": "^4.1.0",
+    "validator": "^13.5.2",
     "yup": "^0.32.8"
   },
   "license": "MIT"
