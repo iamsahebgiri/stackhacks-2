@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
+const uniqueValidator = require("mongoose-unique-validator");
 
-const ItemSchema = new mongoose.Schema(
+const OrderSchema = new mongoose.Schema(
   {
-    item: {type: mongoose.Schema.Types.ObjectId, ref: "Item"},
+    item: {type: mongoose.Schema.Types.ObjectId, ref: "FoodItem"},
     whoOrdered: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
     estimatedTime: {
       type: Number,
@@ -10,15 +11,15 @@ const ItemSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["pending", "preparing", "finished"],
+      enum: ["pending", "cooking", "finished"],
       default: "pending",
     },
   },
   { timestamps: true }
 );
 
-ItemSchema.plugin(uniqueValidator, {
+OrderSchema.plugin(uniqueValidator, {
   message: "{PATH} has already exists.",
 });
 
-mongoose.model("Item", ItemSchema);
+mongoose.model("Item", OrderSchema);

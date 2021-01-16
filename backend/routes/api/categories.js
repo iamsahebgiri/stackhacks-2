@@ -8,6 +8,7 @@ const Category = mongoose.model("Category");
  * POST /categories/create
  * Create a category.
  */
+// TODO: add auth.required
 router.post("/create", (req, res, next) => {
   const category = new Category({
     name: req.body.name,
@@ -23,7 +24,7 @@ router.post("/create", (req, res, next) => {
 
 /**
  * GET /categories/
- * Create a category.
+ * Get all categories.
  */
 router.get("/", (req, res, next) => {
   Category.find()
@@ -40,7 +41,7 @@ router.get("/", (req, res, next) => {
 router.delete("/:categoryId", (req, res, next) => {
   Category.deleteOne({ _id: req.params.categoryId })
     .then(() => {
-      return res.json({ message: "delted category successfully." });
+      return res.json({ message: "category deleted successfully." });
     })
     .catch(next);
 });

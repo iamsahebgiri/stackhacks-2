@@ -10,6 +10,7 @@ app.use(cors());
 
 // Normal express config defaults
 app.use(require("morgan")("dev"));
+app.use("/uploads",express.static("uploads"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -30,7 +31,8 @@ if (isProduction) {
 }
 
 require("./models/User");
-require('./models/Category');
+require("./models/Category");
+require("./models/FoodItem");
 require("./config/passport");
 
 app.use(require("./routes"));
