@@ -1,7 +1,7 @@
 var router = require('express').Router();
 
 router.use('/', require('./users'));
-// router.use('/orgs', require('./orgs'));
+router.use('/categories', require('./categories'));
 // router.use('/articles', require('./articles'));
 // router.use('/tags', require('./tags'));
 

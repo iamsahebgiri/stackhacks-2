@@ -30,7 +30,7 @@ if (isProduction) {
 }
 
 require("./models/User");
-//   require('./models/Comment');
+require('./models/Category');
 require("./config/passport");
 
 app.use(require("./routes"));
