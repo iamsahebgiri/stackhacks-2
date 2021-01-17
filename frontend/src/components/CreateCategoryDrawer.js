@@ -49,6 +49,7 @@ function CreateCategoryDrawer({ isOpen, onClose }) {
                     console.log(response.data);
                     addCategory(response.data.category);
                     toast({
+                      position: "top-right",
                       title: "Category created.",
                       description: "We've created a category for you.",
                       status: "success",
@@ -61,6 +62,7 @@ function CreateCategoryDrawer({ isOpen, onClose }) {
                     const errors = error.response.data.errors;
                     for (let key in errors) {
                       toast({
+                        position: "top-right",
                         title: "An error occurred.",
                         description: errors[key],
                         status: "error",

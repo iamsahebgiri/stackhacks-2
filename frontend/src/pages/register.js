@@ -21,7 +21,7 @@ import {
 import axios from "axios";
 import { Icon } from "@chakra-ui/react";
 import { IoCheckmarkCircle } from "react-icons/io5";
-import SignupSchema from "../../Schema/SignupSchema";
+import SignupSchema from "../../schema/SignupSchema";
 import { Container } from "../components/Container";
 
 const SignupForm = () => {

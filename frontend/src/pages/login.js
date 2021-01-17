@@ -21,7 +21,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { Container } from "../components/Container";
-import SigninSchema from "../../Schema/SigninSchema";
+import SigninSchema from "../../schema/SigninSchema";
 
 const SigninForm = () => {
   const [show, setShow] = React.useState(false);
