@@ -67,10 +67,10 @@ function DashboardShell(props) {
         <Box px="4">
           {navs.map((nav) => (
             <NavItem
-              href={nav.href}
+              href={`/admin/${nav.href}`}
               key={nav.name}
               icon={nav.icon}
-              isActive={router.pathname === `/admin/${nav.href}`}
+              isActive={router.pathname.startsWith(`/admin/${nav.href}`)}
             >
               {nav.name}
             </NavItem>
