@@ -14,11 +14,13 @@
     "@emotion/styled": "^11.0.0",
     "axios": "^0.21.1",
     "clsx": "^1.1.1",
+    "easy-peasy": "^4.0.1",
     "formik": "^2.2.6",
     "framer-motion": "^3.0.0",
     "next": "latest",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
+    "react-dropzone": "^11.2.4",
     "react-icons": "^4.1.0",
     "validator": "^13.5.2",
     "yup": "^0.32.8"
