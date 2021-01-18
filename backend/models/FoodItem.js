@@ -6,15 +6,21 @@ const FoodItemSchema = new mongoose.Schema(
     name: {
       type: String,
       unique: true,
-      required: [true, "name can't be blank"]
+      required: [true, "name can't be blank"],
     },
     picture: String,
+    price: Number,
+    category: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
+    userCreated: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     inStock: {
       type: Boolean,
       default: true,
     },
-    price: Number,
-    category: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
+    foodType: {
+      type: String,
+      enum: ["vegetarian", "non-vegetarian"],
+      default: "vegetarian",
+    },
   },
   { timestamps: true }
 );
@@ -28,9 +34,11 @@ FoodItemSchema.methods.toJSON = function () {
     id: this._id,
     name: this.name,
     picture: this.picture,
-    inStock: this.inStock,
     price: this.price,
-    category: this.category
+    category: this.category,
+    inStock: this.inStock,
+    foodType: this.foodType,
+    userCreated: this.userCreated,
   };
 };
 

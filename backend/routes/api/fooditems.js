@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const router = require("express").Router();
-// const validator = require("validator");
+const validator = require("validator");
+const fs = require("fs");
 const auth = require("../../middleware/auth");
 const FoodItem = mongoose.model("FoodItem");
 const multer = require("multer");
@@ -35,14 +36,16 @@ const upload = multer({
  * POST /fooditems/create
  * Create a food item.
  */
-// TODO: add auth.required
-router.post("/create", upload.single("picture"), (req, res, next) => {
-  
-    const foodItem = new FoodItem({
+router.post("/create", auth.required ,upload.single("picture"), (req, res, next) => {
+
+  const foodItem = new FoodItem({
     name: req.body.name,
     picture: req.file.path,
     price: req.body.price,
     category: req.body.category,
+    inStock: req.body.inStock,
+    foodType: req.body.foodType,
+    userCreated: req.payload.id,
   });
 
   foodItem
@@ -76,8 +79,9 @@ router.get("/", (req, res, next) => {
  * Delete a Food Item.
  */
 router.delete("/:foodItemId", (req, res, next) => {
-  FoodItem.deleteOne({ _id: req.params.foodItemId })
-    .then(() => {
+  FoodItem.findOneAndDelete({ _id: req.params.foodItemId })
+    .then((docs) => {
+      fs.unlinkSync(`./${docs.picture}`);
       return res.json({ message: "food item deleted successfully." });
     })
     .catch(next);
