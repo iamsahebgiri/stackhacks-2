@@ -89,7 +89,7 @@ router.get("/users/account", auth.required, (req, res, next) => {
 });
 
 /**
- * POST /users/account
+ * PUT /users/account
  * Update account information.
  */
 router.put("/users/account", auth.required, (req, res, next) => {

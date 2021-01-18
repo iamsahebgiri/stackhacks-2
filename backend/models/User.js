@@ -25,7 +25,7 @@ const UserSchema = new mongoose.Schema(
     },
     password: String,
 
-    favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Item" }],
+    favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "FoodItem" }],
 
     userType: {
       type: String,
