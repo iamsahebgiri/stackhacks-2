@@ -35,13 +35,12 @@ const UserSchema = new mongoose.Schema(
 
     profile: {
       name: String,
-      bio: String,
-      gender: String,
-      picture: String,
-      employee_id: String,
+      about: String,
+      profilePicture: String,
+      employeeId: String,
       organization: String,
-      mobile_no: String,
-      identity_card: String,
+      mobileNo: String,
+      identityCard: String,
     },
   },
   { timestamps: true }

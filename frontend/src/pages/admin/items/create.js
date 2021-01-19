@@ -17,15 +17,18 @@ import {
   Box,
   Button,
   Select,
+  Divider,
   Text,
   Image,
   useDisclosure,
   createStandaloneToast,
+  Switch,
+  Spacer,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useStoreState, useStoreActions } from "easy-peasy";
 import CreateFoodItemSchema from "../../../../schema/CreateFoodItemSchema";
-import { IoArrowBack } from "react-icons/io5";
+import { IoArrowBack, IoImageOutline } from "react-icons/io5";
 import DashboardShell from "../../../components/DashboardShell";
 import CreateCategoryDrawer from "../../../components/CreateCategoryDrawer";
 
@@ -156,20 +159,28 @@ function CreateItem() {
                   <Stack spacing="4">
                     <Box>
                       <Box
-                        bg="gray.200"
+                        padding="12"
+                        borderWidth="2px"
                         rounded="md"
+                        borderStyle="dashed"
                         textAlign="center"
                         _hover={{ cursor: "pointer" }}
                         _focus={{ outline: "none" }}
-                        p="4"
                         {...getRootProps({ className: "dropzone" })}
                       >
                         <Input {...getInputProps()} />
-                        <Text>
+                        <Icon
+                          as={IoImageOutline}
+                          color="gray.600"
+                          h={8}
+                          w={8}
+                        />
+                        <Text fontSize="md" color="gray.600">
                           Drag & drop image here, or click to select a image
                         </Text>
                       </Box>
                     </Box>
+                    s
                     <Box key={file.name}>
                       <Box>
                         <Image rounded="md" src={file.preview} />
@@ -251,7 +262,9 @@ function CreateItem() {
                       )}
                     </Field>
                     <Flex fontSize="sm">
-                      <Text mr="2">Didn't find appropriate category?</Text>
+                      <Text mr="2" color="gray.600">
+                        Didn't find appropriate category?
+                      </Text>
                       <Text
                         color="teal.500"
                         onClick={onOpen}
@@ -263,16 +276,33 @@ function CreateItem() {
                         Create category
                       </Text>
                     </Flex>
-                    <Stack mt="4">
-                      <Button
-                        colorScheme="teal"
-                        isLoading={props.isSubmitting}
-                        type="submit"
-                      >
-                        Submit
-                      </Button>
+                    <FormControl display="flex" alignItems="center">
+                      <FormLabel htmlFor="email-alerts" mb="0">
+                        Vegetarian Food
+                      </FormLabel>
+                      <Spacer></Spacer>
+                      <Switch id="email-alerts" colorScheme="teal" />
+                    </FormControl>
+                    <Divider orientation="vertical" />
+                    <FormControl display="flex" alignItems="center">
+                      <FormLabel htmlFor="email-alerts" mb="0">
+                        Out of Stock
+                      </FormLabel>
+                      <Spacer></Spacer>
+                      <Switch id="email-alerts" colorScheme="teal" />
+                    </FormControl>
+                  </Stack>
+                  <Stack mt="6" spacing="3">
+                    <Button
+                      colorScheme="teal"
+                      isLoading={props.isSubmitting}
+                      type="submit"
+                    >
+                      Submit
+                    </Button>
+                    <Link href="/admin/items">
                       <Button>Cancel</Button>
-                    </Stack>
+                    </Link>
                   </Stack>
                 </Form>
               )}
