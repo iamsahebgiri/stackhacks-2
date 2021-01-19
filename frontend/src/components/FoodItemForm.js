@@ -27,9 +27,12 @@ import FoodItemSchema from "./../../schema/FoodItemSchema";
 import { IoImageOutline } from "react-icons/io5";
 import CreateCategoryDrawer from "./CreateCategoryDrawer";
 
-function FoodItemForm({ formSubmitFn, btnType = "Submit" }) {
+function FoodItemForm({ formSubmitFn, btnType = "Submit", foodItem }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const categories = useStoreState((state) => state.categories);
+
+  const [inStock, setInStock] = useState(true);
+  const [vegFood, setVegFood] = useState(true);
 
   const getAllCategories = useStoreActions(
     (actions) => actions.getAllCategories
@@ -46,12 +49,20 @@ function FoodItemForm({ formSubmitFn, btnType = "Submit" }) {
           preview: URL.createObjectURL(acceptedFile[0]),
         })
       );
+      console.log(file);
     },
   });
 
   useEffect(() => {
     getAllCategories();
   }, []);
+
+  useEffect(() => {
+    if (foodItem) {
+      setInStock(foodItem.inStock);
+      setVegFood(foodItem.foodType == "vegetarian");
+    }
+  }, [foodItem]);
 
   useEffect(
     () => () => {
@@ -64,7 +75,12 @@ function FoodItemForm({ formSubmitFn, btnType = "Submit" }) {
     <Stack alignItems="center">
       <Flex my="12" width="md">
         <Formik
-          initialValues={{ name: "", price: 10, category: "" }}
+          enableReinitialize={true}
+          initialValues={{
+            name: foodItem ? foodItem.name : "",
+            price: foodItem ? foodItem.price : 0,
+            category: foodItem ? foodItem.category?.id : "",
+          }}
           validationSchema={FoodItemSchema}
           onSubmit={(values, actions) => {
             let formData = new FormData();
@@ -72,8 +88,14 @@ function FoodItemForm({ formSubmitFn, btnType = "Submit" }) {
             formData.append("name", values.name);
             formData.append("price", values.price);
             formData.append("category", values.category);
-            formData.append("picture", file);
-
+            if (file) {
+              formData.append("picture", file);
+            }
+            formData.append("inStock", inStock);
+            formData.append(
+              "foodType",
+              vegFood ? "vegetarian" : "non-vegetarian"
+            );
             formSubmitFn(formData, actions);
           }}
         >
@@ -98,16 +120,19 @@ function FoodItemForm({ formSubmitFn, btnType = "Submit" }) {
                     </Text>
                   </Box>
                 </Box>
-                s
                 <Box key={file.name}>
                   <Box>
-                    {Object.keys(file).length === 0 ? null : (
+                    {Object.keys(file).length === 0 && !foodItem ? null : (
                       <Image
                         border="none"
                         boxSize="md"
                         objectFit="cover"
                         rounded="md"
-                        src={file.preview}
+                        src={
+                          foodItem
+                            ? `http://localhost:3030/${foodItem.picture}`
+                            : file.preview
+                        }
                       />
                     )}
                   </Box>
@@ -167,6 +192,7 @@ function FoodItemForm({ formSubmitFn, btnType = "Submit" }) {
                       <Select
                         {...field}
                         id="category"
+                        placeholder="Category"
                         focusBorderColor="teal.500"
                       >
                         {categories.map((category) => (
@@ -196,20 +222,30 @@ function FoodItemForm({ formSubmitFn, btnType = "Submit" }) {
                     Create category
                   </Text>
                 </Flex>
-                <FormControl display="flex" alignItems="center">
-                  <FormLabel htmlFor="veg-food" mb="0">
+                <FormControl display="flex" alignItems="center" isRequired>
+                  <FormLabel htmlFor="vegFood" mb="0">
                     Vegetarian food
                   </FormLabel>
                   <Spacer></Spacer>
-                  <Switch id="veg-food" colorScheme="teal" />
+                  <Switch
+                    id="vegFood"
+                    colorScheme="teal"
+                    isChecked={vegFood}
+                    onChange={() => setVegFood((state) => !state)}
+                  />
                 </FormControl>
-                <Divider orientation="vertical" />
-                <FormControl display="flex" alignItems="center">
-                  <FormLabel htmlFor="out-of-stock" mb="0">
-                    Out of stock
+
+                <FormControl display="flex" alignItems="center" isRequired>
+                  <FormLabel htmlFor="inStock" mb="0">
+                    In stock
                   </FormLabel>
                   <Spacer></Spacer>
-                  <Switch id="out-of-stock" colorScheme="teal" />
+                  <Switch
+                    id="inStock"
+                    colorScheme="teal"
+                    isChecked={inStock}
+                    onChange={() => setInStock((state) => !state)}
+                  />
                 </FormControl>
               </Stack>
               <Stack mt="6" spacing="3">

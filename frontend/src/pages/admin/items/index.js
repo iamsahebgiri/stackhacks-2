@@ -7,70 +7,48 @@ import {
   Image,
   Heading,
   Text,
-  createStandaloneToast,
 } from "@chakra-ui/react";
-import axios from "axios";
 import { useStoreState, useStoreActions } from "easy-peasy";
 import DashboardShell from "../../../components/DashboardShell";
 import { AddIcon } from "@chakra-ui/icons";
 import isAuthenticted from "../../../../utils/isAuthenticated";
 import { useRouter } from "next/router";
 
-const FoodItem = ({ id, name, picture, price, category }) => {
-  const toast = createStandaloneToast();
-  const deleteFoodItem = useStoreActions((actions) => actions.deleteFoodItem);
-
-  const deleteFoodItemFn = (id) => {
-    axios
-      .delete(`http://localhost:3030/api/fooditems/${id}`)
-      .then((response) => {
-        deleteFoodItem(id);
-        console.log(response.data);
-        toast({
-          position: "top-right",
-          title: "Food Deleted.",
-          description: response.data.message,
-          status: "success",
-          duration: 9000,
-          isClosable: true,
-        });
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
-  };
+const FoodItem = ({ id, name, picture, price, category, foodType, userCreated }) => {
   return (
-    <Flex maxWidth="500px" mb="4">
-      <Image
-        rounded="md"
-        boxSize="100px"
-        objectFit="cover"
-        src={`http://localhost:3030/${picture}`}
-        alt={name}
-      />
-      <Stack ml="4">
-        <Heading fontSize="lg" m="0">
-          {name}
-        </Heading>
-        <Flex>
-          <Flex fontSize="sm" fontWeight="500" color="gray.600">
-            <Text>₹ {price} </Text>
-            <Text mx="1">·</Text>
-            {/* <Text>{category?.name}</Text> */}
-            <Text> Drinks </Text>
-            <Text mx="1">·</Text>
-            <Text> Vegetarian</Text>
-          </Flex>
+    <Link href={`/admin/items/edit/${id}`}>
+      <a>
+        <Flex maxWidth="500px" mb="4">
+          <Image
+            rounded="md"
+            boxSize="100px"
+            objectFit="cover"
+            src={`http://localhost:3030/${picture}`}
+            alt={name}
+          />
+          <Stack ml="4">
+            <Heading fontSize="lg" m="0">
+              {name}
+            </Heading>
+            <Flex>
+              <Flex fontSize="sm" fontWeight="500" color="gray.600">
+                <Text>₹ {price} </Text>
+                <Text mx="1">·</Text>
+                <Text>{category?.name}</Text>
+                <Text mx="1">·</Text>
+                <Text>{foodType}</Text>
+              </Flex>
+            </Flex>
+            <Flex fontSize="sm">
+              <Text display="inline-block" color="gray.600" mr="1">
+                By
+              </Text>
+              <Text>{userCreated.username}</Text>
+            </Flex>
+          </Stack>
         </Flex>
-        <Flex fontSize="sm">
-          <Text display="inline-block" color="gray.600">
-            By
-          </Text>
-          <Text>Saheb Giri</Text>
-        </Flex>
-      </Stack>
-      {/* <Button onClick={() => deleteFoodItemFn(id)}>Delete</Button> */}
-    </Flex>
+      </a>
+    </Link>
   );
 };
 

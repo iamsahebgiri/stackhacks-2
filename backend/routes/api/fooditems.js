@@ -56,6 +56,7 @@ router.post(
       .then((savedFoodItem) => {
         savedFoodItem
           .populate("category")
+          .populate("userCreated")
           .execPopulate()
           .then((popudatedFoodItem) => {
             return res.json({ foodItem: popudatedFoodItem });
@@ -72,6 +73,7 @@ router.post(
 router.get("/", (req, res, next) => {
   FoodItem.find()
     .populate("category")
+    .populate("userCreated", "username")
     .then((foodItems) => {
       return res.json({ foodItems });
     })
@@ -79,7 +81,22 @@ router.get("/", (req, res, next) => {
 });
 
 /**
- * PUT /users/account
+ * GET /fooditems/:foodItemId
+ * Get a fooditem.
+ */
+router.get("/:foodItemId", (req, res, next) => {
+  FoodItem.findById(req.params.foodItemId)
+    .populate("category")
+    .populate("userCreated", "username")
+    .then((foodItem) => {
+      return res.json({ foodItem });
+    })
+    .catch(next);
+});
+
+
+/**
+ * PUT /fooditems/:foodItemId
  * Update account information.
  */
 router.put(
@@ -98,8 +115,8 @@ router.put(
         if (typeof req.body.name !== "undefined") {
           foodItem.name = req.body.name;
         }
-        if (typeof req.body.picture !== "undefined") {
-          foodItem.picture = req.body.picture;
+        if (typeof req.file?.path !== "undefined") {
+          foodItem.picture = req.file.path;
         }
         if (typeof req.body.price !== "undefined") {
           foodItem.price = req.body.price;

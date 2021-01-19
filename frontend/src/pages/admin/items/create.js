@@ -19,10 +19,16 @@ function CreateItem() {
   const router = useRouter();
 
   const formSubmitFn = (formData, actions) => {
-    console.log("form Submitting");
+    // console.log(formData.entries());
+    for (var pair of formData.entries()) {
+      console.log(pair[0] + ", " + pair[1]);
+    }
     axios
       .post("http://localhost:3030/api/fooditems/create", formData, {
-        headers: { "content-type": "multipart/form-data" },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "content-type": "multipart/form-data",
+        },
       })
       .then((response) => {
         actions.setSubmitting(false);
