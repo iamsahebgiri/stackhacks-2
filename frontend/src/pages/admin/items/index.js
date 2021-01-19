@@ -52,7 +52,7 @@ const FoodItem = ({ id, name, picture, price, category }) => {
         </Heading>
         <Flex>
           <Flex fontSize="sm" fontWeight="500" color="gray.600">
-          <Text>₹ {price} </Text>
+            <Text>₹ {price} </Text>
             <Text mx="1">·</Text>
             {/* <Text>{category?.name}</Text> */}
             <Text> Drinks </Text>
@@ -60,8 +60,12 @@ const FoodItem = ({ id, name, picture, price, category }) => {
             <Text> Vegetarian</Text>
           </Flex>
         </Flex>
-        <Text fontSize="sm">
-          <Text display="inline-block" color="gray.600">By</Text> Saheb Giri</Text>
+        <Flex fontSize="sm">
+          <Text display="inline-block" color="gray.600">
+            By
+          </Text>
+          <Text>Saheb Giri</Text>
+        </Flex>
       </Stack>
       {/* <Button onClick={() => deleteFoodItemFn(id)}>Delete</Button> */}
     </Flex>

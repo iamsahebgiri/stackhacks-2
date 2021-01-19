@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 
-const CreateFoodItemSchema = Yup.object().shape({
+const FoodItemSchema = Yup.object().shape({
   name: Yup.string().required("Food name can't be blank."),
   price: Yup.number("Price has to a number.")
     .required("Price can't be blank.")
@@ -9,4 +9,4 @@ const CreateFoodItemSchema = Yup.object().shape({
   category: Yup.string().required("Please, select a category."),
 });
 
-export default CreateFoodItemSchema;
+export default FoodItemSchema;
