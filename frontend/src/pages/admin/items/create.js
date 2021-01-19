@@ -171,7 +171,7 @@ function CreateItem() {
                         <Input {...getInputProps()} />
                         <Icon
                           as={IoImageOutline}
-                          color="gray.600"
+                          color="gray.300"
                           h={8}
                           w={8}
                         />

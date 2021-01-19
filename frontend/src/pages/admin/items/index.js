@@ -38,7 +38,7 @@ const FoodItem = ({ id, name, picture, price, category }) => {
       });
   };
   return (
-    <Flex>
+    <Flex maxWidth="500px" mb="4">
       <Image
         rounded="md"
         boxSize="100px"
@@ -101,11 +101,11 @@ function Items() {
           </Link>
         </Stack>
 
-        <Stack spacing="4">
+        <Flex flexWrap="wrap" justifyContent="space-between">
           {foodItems.map((foodItem) => (
             <FoodItem key={foodItem.id} {...foodItem}></FoodItem>
           ))}
-        </Stack>
+        </Flex>
       </Flex>
     </DashboardShell>
   );
