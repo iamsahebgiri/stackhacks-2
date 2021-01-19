@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import {
   Avatar,
@@ -9,13 +9,11 @@ import {
   MenuGroup,
   MenuItem,
   MenuList,
-  MenuDivider,
-  Text,
-  Heading,
 } from "@chakra-ui/react";
 import NavItem from "./NavItem";
 import { RiHomeSmile2Fill } from "react-icons/ri";
 import { IoFastFood, IoPersonCircle, IoAlbums } from "react-icons/io5";
+import isAuthenticated from "../../utils/isAuthenticated";
 
 function DashboardShell(props) {
   const router = useRouter();
@@ -41,6 +39,12 @@ function DashboardShell(props) {
       href: "account",
     },
   ];
+
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      router.push("/login");
+    }
+  }, []);
   return (
     <Box>
       <Flex position="fixed">
@@ -63,8 +67,23 @@ function DashboardShell(props) {
             ></MenuButton>
             <MenuList>
               <MenuGroup title="Account">
-                <MenuItem fontSize="sm">Settings</MenuItem>
-                <MenuItem fontSize="sm">Sign Out</MenuItem>
+                <MenuItem
+                  fontSize="sm"
+                  onClick={() => {
+                    router.push("/admin/account");
+                  }}
+                >
+                  Settings
+                </MenuItem>
+                <MenuItem
+                  fontSize="sm"
+                  onClick={() => {
+                    localStorage.removeItem("token");
+                    router.push("/login");
+                  }}
+                >
+                  Sign Out
+                </MenuItem>
               </MenuGroup>
             </MenuList>
           </Menu>

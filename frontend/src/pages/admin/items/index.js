@@ -13,6 +13,8 @@ import axios from "axios";
 import { useStoreState, useStoreActions } from "easy-peasy";
 import DashboardShell from "../../../components/DashboardShell";
 import { AddIcon } from "@chakra-ui/icons";
+import isAuthenticted from "../../../../utils/isAuthenticated";
+import { useRouter } from "next/router";
 
 const FoodItem = ({ id, name, picture, price, category }) => {
   const toast = createStandaloneToast();
@@ -73,11 +75,16 @@ const FoodItem = ({ id, name, picture, price, category }) => {
 };
 
 function Items() {
+  const router = useRouter();
   const foodItems = useStoreState((state) => state.foodItems);
   const getAllFoodItems = useStoreActions((actions) => actions.getAllFoodItems);
 
   useEffect(() => {
-    getAllFoodItems();
+    if (!isAuthenticted) {
+      router.push("/login");
+    } else {
+      getAllFoodItems();
+    }
   }, []);
 
   return (

@@ -1,35 +1,13 @@
 import React, { useEffect } from "react";
-import Link from "next/link";
-import {
-  Flex,
-  Button,
-  Stack,
-  Image,
-  Icon,
-  Box,
-  Text,
-  Heading,
-  createStandaloneToast,
-  useDisclosure,
-  Tabs,
-  TabList,
-  Tab,
-  TabPanels,
-  TabPanel,
-} from "@chakra-ui/react";
-import axios from "axios";
-import { useStoreState, useStoreActions } from "easy-peasy";
+import { Flex, Stack, Box, Heading } from "@chakra-ui/react";
+import { useStoreActions } from "easy-peasy";
 import DashboardShell from "../../../components/DashboardShell";
-import CreateCategoryDrawer from "../../../components/CreateCategoryDrawer";
-import { AddIcon } from "@chakra-ui/icons";
 import OrdersTable from "../../../components/OrdersTable";
 
 function Categories() {
-  const categories = useStoreState((state) => state.categories);
   const getAllCategories = useStoreActions(
     (actions) => actions.getAllCategories
   );
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     getAllCategories();

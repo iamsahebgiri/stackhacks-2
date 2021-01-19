@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {
@@ -76,7 +76,7 @@ function CreateItem() {
             Add Food Item
           </Heading>
         </Stack>
-        <FoodItemForm formSubmitFn={formSubmitFn} />
+        <FoodItemForm formSubmitFn={formSubmitFn} btnType="Submit" />
       </Flex>
     </DashboardShell>
   );

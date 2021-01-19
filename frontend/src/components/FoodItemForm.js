@@ -27,7 +27,7 @@ import FoodItemSchema from "./../../schema/FoodItemSchema";
 import { IoImageOutline } from "react-icons/io5";
 import CreateCategoryDrawer from "./CreateCategoryDrawer";
 
-function FoodItemForm({ formSubmitFn }) {
+function FoodItemForm({ formSubmitFn, btnType = "Submit" }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const categories = useStoreState((state) => state.categories);
 
@@ -101,12 +101,15 @@ function FoodItemForm({ formSubmitFn }) {
                 s
                 <Box key={file.name}>
                   <Box>
-                    <Image
-                      boxSize="md"
-                      objectFit="cover"
-                      rounded="md"
-                      src={file.preview}
-                    />
+                    {Object.keys(file).length === 0 ? null : (
+                      <Image
+                        border="none"
+                        boxSize="md"
+                        objectFit="cover"
+                        rounded="md"
+                        src={file.preview}
+                      />
+                    )}
                   </Box>
                 </Box>
                 <Field name="name">
@@ -194,19 +197,19 @@ function FoodItemForm({ formSubmitFn }) {
                   </Text>
                 </Flex>
                 <FormControl display="flex" alignItems="center">
-                  <FormLabel htmlFor="email-alerts" mb="0">
-                    Vegetarian Food
+                  <FormLabel htmlFor="veg-food" mb="0">
+                    Vegetarian food
                   </FormLabel>
                   <Spacer></Spacer>
-                  <Switch id="email-alerts" colorScheme="teal" />
+                  <Switch id="veg-food" colorScheme="teal" />
                 </FormControl>
                 <Divider orientation="vertical" />
                 <FormControl display="flex" alignItems="center">
-                  <FormLabel htmlFor="email-alerts" mb="0">
-                    Out of Stock
+                  <FormLabel htmlFor="out-of-stock" mb="0">
+                    Out of stock
                   </FormLabel>
                   <Spacer></Spacer>
-                  <Switch id="email-alerts" colorScheme="teal" />
+                  <Switch id="out-of-stock" colorScheme="teal" />
                 </FormControl>
               </Stack>
               <Stack mt="6" spacing="3">
@@ -215,7 +218,7 @@ function FoodItemForm({ formSubmitFn }) {
                   isLoading={props.isSubmitting}
                   type="submit"
                 >
-                  Submit
+                  {btnType}
                 </Button>
                 <Link href="/admin/items">
                   <Button>Cancel</Button>
