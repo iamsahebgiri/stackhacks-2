@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import {
   Avatar,
   Box,
+  Button,
   Flex,
   Menu,
   MenuButton,
@@ -58,13 +59,14 @@ function DashboardShell(props) {
           justifyContent="space-between"
         >
           <Avatar size="sm" name="Oshigaki Kisame" src=""></Avatar>
-          <Menu placement="right" offset={[-40, 10]}>
-            <MenuButton
-              as={Avatar}
-              size="sm"
-              name="Dan Abrahmov"
-              src="https://bit.ly/dan-abramov"
-            ></MenuButton>
+          <Menu offset={[40, -30]}>
+            <MenuButton>
+              <Avatar
+                size="sm"
+                name="Dan Abrahmov"
+                src="https://bit.ly/dan-abramov"
+              />
+            </MenuButton>
             <MenuList>
               <MenuGroup title="Account">
                 <MenuItem

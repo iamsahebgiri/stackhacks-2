@@ -122,19 +122,18 @@ function FoodItemForm({ formSubmitFn, btnType = "Submit", foodItem }) {
                 </Box>
                 <Box key={file.name}>
                   <Box>
-                    {Object.keys(file).length === 0 && !foodItem ? null : (
-                      <Image
-                        border="none"
-                        boxSize="md"
-                        objectFit="cover"
-                        rounded="md"
-                        src={
-                          foodItem
-                            ? `http://localhost:3030/${foodItem.picture}`
-                            : file.preview
-                        }
-                      />
-                    )}
+                    <Image
+                      border="none"
+                      boxSize="md"
+                      objectFit="cover"
+                      fallbackSrc="https://via.placeholder.com/250/000000/FFFFFF/?text=Add an image"
+                      rounded="md"
+                      src={
+                        foodItem
+                          ? `http://localhost:3030/${foodItem.picture}`
+                          : file.preview
+                      }
+                    />
                   </Box>
                 </Box>
                 <Field name="name">
