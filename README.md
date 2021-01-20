@@ -24,15 +24,15 @@ Develop a pseudo full-stack app for Office cafeteria
   - [ ] Display ID card in the preview.
 - [ ] On Submission :
   - [ ] Registration ID has to be generated and displayed on Success Screen.
-  - [ ] Store all the information captured in a local database
-  - [ ] Registration Date has to be generated as system date and get stored in Database
+  - [x] Store all the information captured in a local database
+  - [x] Registration Date has to be generated as system date and get stored in Database
 
 ### On Back end:
 
-- [ ] Implement the backend in one of the desired Tech Stacks provided below.
-- [ ] Backend should store all the tasks data received from the Frontend, in the Database.
-- [ ] Implement a Database in the Backend which should store all this structured data.
-- [ ] Data sharing between Frontend and Backend should be in JSON format rendered over REST APIs.
+- [x] Implement the backend in one of the desired Tech Stacks provided below.
+- [x] Backend should store all the tasks data received from the Frontend, in the Database.
+- [x] Implement a Database in the Backend which should store all this structured data.
+- [x] Data sharing between Frontend and Backend should be in JSON format rendered over REST APIs.
 - [ ] Zip all your Source Code, Screenshots, Deployment Instructions and Upload.
 
 ### Deployment :
@@ -48,7 +48,7 @@ Develop a pseudo full-stack app for Office cafeteria
 ## Plus points (experienced / wizard)
 
 - [ ] Along with everything asked in Minimum Requirement :
-  - [ ] Sign-up/Login functionality.
+  - [x] Sign-up/Login functionality.
   - [ ] Set time for take-away of order
 - [ ] Documented, well structured beautified code.
 
@@ -66,10 +66,12 @@ Develop a pseudo full-stack app for Office cafeteria
 
 ### Frontend
 
-- [ ] Next.js
-- [ ] Chakra UI
+- [x] Next.js
+- [x] Chakra UI
+- [x] Easy Peasy for state management
 
 ### Backend
 
-- [ ] ExpressJS
-- [ ] ORM - Mongoose
+- [x] ExpressJS
+- [x] ODM - Mongoose
+- [x] Multer for handling form.

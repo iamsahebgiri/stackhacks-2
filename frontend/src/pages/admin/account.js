@@ -25,7 +25,19 @@ function Account() {
             </Flex>
             <Box shadow="sm" width="70%" bg="white" rounded="md" p="4">
               <Stack spacing="4">
+               
                 <Stack spacing="4" direction="row">
+                  <FormControl id="email" mr="4">
+                    <FormLabel>First Name</FormLabel>
+                    <Input type="email" />
+                  </FormControl>
+                  <FormControl id="email">
+                    <FormLabel>Last Name</FormLabel>
+                    <Input type="email" />
+                  </FormControl>
+                </Stack>
+                <Stack spacing="4" direction="row">
+                  
                   <FormControl id="email">
                     <FormLabel>Employee Id</FormLabel>
                     <Input type="email" />
@@ -39,10 +51,6 @@ function Account() {
                   <FormLabel>Email address</FormLabel>
                   <Input type="email" />
                   <FormHelperText>We'll never share your email.</FormHelperText>
-                </FormControl>
-                <FormControl id="email">
-                  <FormLabel>Username</FormLabel>
-                  <Input type="email" />
                 </FormControl>
                 <FormControl id="email">
                   <FormLabel>Contact No</FormLabel>

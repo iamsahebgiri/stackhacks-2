@@ -1,24 +1,25 @@
 import React, { useEffect } from "react";
 import Link from "next/link";
-import {
-  Flex,
-  Button,
-  Stack,
-  Image,
-  Heading,
-  Text,
-} from "@chakra-ui/react";
+import { Flex, Button, Stack, Image, Heading, Text } from "@chakra-ui/react";
 import { useStoreState, useStoreActions } from "easy-peasy";
 import DashboardShell from "../../../components/DashboardShell";
 import { AddIcon } from "@chakra-ui/icons";
 import isAuthenticted from "../../../../utils/isAuthenticated";
 import { useRouter } from "next/router";
 
-const FoodItem = ({ id, name, picture, price, category, foodType, userCreated }) => {
+const FoodItem = ({
+  id,
+  name,
+  picture,
+  price,
+  category,
+  foodType,
+  userCreated,
+}) => {
   return (
     <Link href={`/admin/items/edit/${id}`}>
       <a>
-        <Flex maxWidth="500px" mb="4">
+        <Flex maxWidth="500px" p="2" pr="6" rounded="md" mb="4" bg="white" shadow="sm" _hover={{  }}>
           <Image
             rounded="md"
             boxSize="100px"

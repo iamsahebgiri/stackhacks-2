@@ -113,11 +113,11 @@ router.put("/users/account", auth.required, (req, res, next) => {
         user.email = req.body.user.email;
       }
 
-      const { profile } = req.body.user;
-      if (typeof profile !== "undefined") {
-        for (let key in profile) {
-          user.profile[key] = profile[key];
-          console.log(key, profile[key]);
+      const { extraInfo } = req.body.user;
+      if (typeof extraInfo !== "undefined") {
+        for (let key in extraInfo) {
+          user.extraInfo[key] = extraInfo[key];
+          console.log(key, extraInfo[key]);
         }
       }
 

@@ -33,7 +33,7 @@ const UserSchema = new mongoose.Schema(
       default: "employee",
     },
 
-    profile: {
+    extraInfo: {
       name: String,
       about: String,
       profilePicture: String,
@@ -106,7 +106,7 @@ UserSchema.methods.toAuthJSON = function () {
     userType: this.userType,
     favorites: this.favorites,
     token: this.generateJWT(),
-    profile: this.profile,
+    extraInfo: this.extraInfo,
   };
 };
 
