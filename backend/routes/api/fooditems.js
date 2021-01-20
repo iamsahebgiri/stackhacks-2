@@ -67,8 +67,22 @@ router.post(
 );
 
 /**
+ * GET /fooditems/me
+ * Get all fooditems created by an user.
+ */
+router.get("/me", auth.required, (req, res, next) => {
+  FoodItem.find({ userCreated: req.payload.id })
+    .populate("category")
+    .populate("userCreated", "username")
+    .then((foodItems) => {
+      return res.json({ foodItems });
+    })
+    .catch(next);
+});
+
+/**
  * GET /fooditems/
- * Get all fooditems.
+ * Get fooditems.
  */
 router.get("/", (req, res, next) => {
   FoodItem.find()
@@ -93,7 +107,6 @@ router.get("/:foodItemId", (req, res, next) => {
     })
     .catch(next);
 });
-
 
 /**
  * PUT /fooditems/:foodItemId

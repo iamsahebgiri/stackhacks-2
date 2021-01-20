@@ -6,63 +6,18 @@ import DashboardShell from "../../../components/DashboardShell";
 import { AddIcon } from "@chakra-ui/icons";
 import isAuthenticted from "../../../../utils/isAuthenticated";
 import { useRouter } from "next/router";
-
-const FoodItem = ({
-  id,
-  name,
-  picture,
-  price,
-  category,
-  foodType,
-  userCreated,
-}) => {
-  return (
-    <Link href={`/admin/items/edit/${id}`}>
-      <a>
-        <Flex maxWidth="500px" p="2" pr="6" rounded="md" mb="4" bg="white" shadow="sm" _hover={{  }}>
-          <Image
-            rounded="md"
-            boxSize="100px"
-            objectFit="cover"
-            src={`http://localhost:3030/${picture}`}
-            alt={name}
-          />
-          <Stack ml="4">
-            <Heading fontSize="lg" m="0">
-              {name}
-            </Heading>
-            <Flex>
-              <Flex fontSize="sm" fontWeight="500" color="gray.600">
-                <Text>₹ {price} </Text>
-                <Text mx="1">·</Text>
-                <Text>{category?.name}</Text>
-                <Text mx="1">·</Text>
-                <Text>{foodType}</Text>
-              </Flex>
-            </Flex>
-            <Flex fontSize="sm">
-              <Text display="inline-block" color="gray.600" mr="1">
-                By
-              </Text>
-              <Text>{userCreated.username}</Text>
-            </Flex>
-          </Stack>
-        </Flex>
-      </a>
-    </Link>
-  );
-};
+import FoodItem from "../../../components/FoodItem";
 
 function Items() {
   const router = useRouter();
   const foodItems = useStoreState((state) => state.foodItems);
-  const getAllFoodItems = useStoreActions((actions) => actions.getAllFoodItems);
+  const getFoodItemsByMe = useStoreActions((actions) => actions.getFoodItemsByMe);
 
   useEffect(() => {
     if (!isAuthenticted) {
       router.push("/login");
     } else {
-      getAllFoodItems();
+      getFoodItemsByMe();
     }
   }, []);
 
@@ -93,7 +48,7 @@ function Items() {
 
         <Flex flexWrap="wrap" justifyContent="space-between">
           {foodItems.map((foodItem) => (
-            <FoodItem key={foodItem.id} {...foodItem}></FoodItem>
+            <FoodItem isEditable key={foodItem.id} {...foodItem}></FoodItem>
           ))}
         </Flex>
       </Flex>

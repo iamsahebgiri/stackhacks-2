@@ -10,7 +10,9 @@ const store = createStore({
     state.categories = [];
   }),
   deleteCategory: action((state, id) => {
-    state.categories = state.categories.filter((category) => category.id !== id);
+    state.categories = state.categories.filter(
+      (category) => category.id !== id
+    );
   }),
   getAllCategories: thunk((actions, payload) => {
     actions.flushCategories();
@@ -42,6 +44,25 @@ const store = createStore({
       .get("http://localhost:3030/api/fooditems")
       .then((response) => {
         const foodItems = response.data.foodItems;
+        foodItems.map((foodItem) => {
+          actions.addFoodItem(foodItem);
+        });
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
+  }),
+  getFoodItemsByMe: thunk((actions, payload) => {
+    actions.flushFoodItem();
+    axios
+      .get("http://localhost:3030/api/fooditems/me", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((response) => {
+        const foodItems = response.data.foodItems;
+        console.log(response.data)
         foodItems.map((foodItem) => {
           actions.addFoodItem(foodItem);
         });

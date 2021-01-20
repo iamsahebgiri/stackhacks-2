@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
+const User = mongoose.model("User");
 
 const FoodItemSchema = new mongoose.Schema(
   {
