@@ -7,7 +7,7 @@ const OrderSchema = new mongoose.Schema(
     whoOrdered: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
     estimatedTime: {
       type: Number,
-      default: 2,
+      default: 5,
     },
     status: {
       type: String,
@@ -22,4 +22,4 @@ OrderSchema.plugin(uniqueValidator, {
   message: "{PATH} has already exists.",
 });
 
-mongoose.model("Item", OrderSchema);
+mongoose.model("Order", OrderSchema);

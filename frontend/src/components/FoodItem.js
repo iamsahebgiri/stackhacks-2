@@ -8,7 +8,9 @@ import {
   Heading,
   Text,
   Box,
+  createStandaloneToast,
 } from "@chakra-ui/react";
+import axios from "axios";
 import { useRouter } from "next/router";
 
 const FoodItem = ({
@@ -21,6 +23,7 @@ const FoodItem = ({
   userCreated,
   isEditable,
 }) => {
+  const toast = createStandaloneToast();
   const router = useRouter();
   return (
     <Flex
@@ -82,7 +85,40 @@ const FoodItem = ({
                 </Button>
               </>
             ) : (
-              <Button size="sm" width="120px">
+              <Button
+                size="sm"
+                width="120px"
+                onClick={() => {
+                  // console.log("sas");
+                  axios
+                    .post(
+                      "http://localhost:3030/api/orders/create",
+                      { item: id },
+                      {
+                        headers: {
+                          Authorization: `Bearer ${localStorage.getItem(
+                            "token"
+                          )}`,
+                        },
+                      }
+                    )
+                    .then((response) => {
+                      router.push("/home");
+                      toast({
+                        position: "bottom-left",
+                        title: "Your order has been placed.",
+                        description: "You will be served within five mintues.",
+                        status: "success",
+                        duration: 9000,
+                        isClosable: true,
+                      });
+                      console.log(response.data);
+                    })
+                    .catch((error) => {
+                      console.log(error.response);
+                    });
+                }}
+              >
                 Place order
               </Button>
             )}

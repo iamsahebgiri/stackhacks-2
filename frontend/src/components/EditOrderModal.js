@@ -18,11 +18,11 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useStoreActions } from "easy-peasy";
-import CreateCategorySchema from "../../schema/CreateCategorySchema";
+import UpdateOrderSchema from "../../schema/UpdateOrderSchema";
 
-function EditOrderModal({ isOpen, onClose }) {
+function EditOrderModal({ isOpen, onClose, id }) {
   const toast = createStandaloneToast();
-  const addCategory = useStoreActions((actions) => actions.addCategory);
+  const updateOrder = useStoreActions((actions) => actions.updateOrder);
   return (
     <>
       <Modal
@@ -33,26 +33,28 @@ function EditOrderModal({ isOpen, onClose }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Edit Status</ModalHeader>
+          <ModalHeader>Update Order</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Formik
-              initialValues={{ name: "" }}
-              validationSchema={CreateCategorySchema}
+              initialValues={{ status: "pending", estimatedTime: 5 }}
+              validationSchema={UpdateOrderSchema}
               onSubmit={(values, actions) => {
                 console.log(values);
                 axios
-                  .post("http://localhost:3030/api/categories/create", {
-                    ...values,
+                  .put(`http://localhost:3030/api/orders/${id}`, values, {
+                    headers: {
+                      Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
                   })
                   .then((response) => {
                     actions.setSubmitting(false);
                     console.log(response.data);
-                    addCategory(response.data.category);
+                    updateOrder({ ...values, id });
                     toast({
                       position: "top-right",
-                      title: "Category created.",
-                      description: "We've created a category for you.",
+                      title: "Order updated.",
+                      description: "Order has been updated",
                       status: "success",
                       duration: 9000,
                       isClosable: true,
@@ -60,17 +62,15 @@ function EditOrderModal({ isOpen, onClose }) {
                     onClose();
                   })
                   .catch((error) => {
-                    const errors = error.response.data.errors;
-                    for (let key in errors) {
-                      toast({
-                        position: "top-right",
-                        title: "An error occurred.",
-                        description: errors[key],
-                        status: "error",
-                        duration: 9000,
-                        isClosable: true,
-                      });
-                    }
+                    console.log(error.response);
+                    toast({
+                      position: "top-right",
+                      title: "An error occurred.",
+                      description: "Somthing went wrong!",
+                      status: "error",
+                      duration: 9000,
+                      isClosable: true,
+                    });
 
                     actions.setSubmitting(false);
                   });
@@ -78,28 +78,53 @@ function EditOrderModal({ isOpen, onClose }) {
             >
               {(props) => (
                 <Form>
-                  <Field name="name">
-                    {({ field, form }) => (
-                      <FormControl
-                        isInvalid={form.errors.name && form.touched.name}
-                        isRequired
-                      >
-                        <FormLabel htmlFor="name">Status</FormLabel>
-                        {/* <Input
-                          {...field}
-                          id="name"
-                          placeholder="Fast Food"
-                          focusBorderColor="teal.500"
-                        /> */}
-                        <Select placeholder="Select Status">
-                          <option>Pending</option>
-                          <option>Cooking</option>
-                          <option>Finished</option>
-                        </Select>
-                        <FormErrorMessage>{form.errors.name}</FormErrorMessage>
-                      </FormControl>
-                    )}
-                  </Field>
+                  <Stack spacing="4">
+                    <Field name="status">
+                      {({ field, form }) => (
+                        <FormControl
+                          isInvalid={form.errors.status && form.touched.status}
+                        >
+                          <FormLabel htmlFor="status">Status</FormLabel>
+                          <Select
+                            {...field}
+                            id="status"
+                            placeholder="Select Status"
+                          >
+                            <option>pending</option>
+                            <option>cooking</option>
+                            <option>finished</option>
+                          </Select>
+                          <FormErrorMessage>
+                            {form.errors.status}
+                          </FormErrorMessage>
+                        </FormControl>
+                      )}
+                    </Field>
+                    <Field name="estimatedTime">
+                      {({ field, form }) => (
+                        <FormControl
+                          isInvalid={
+                            form.errors.estimatedTime &&
+                            form.touched.estimatedTime
+                          }
+                        >
+                          <FormLabel htmlFor="estimatedTime">
+                            Estimated time(in min)
+                          </FormLabel>
+                          <Input
+                            {...field}
+                            type="number"
+                            id="estimatedTime"
+                            placeholder="5"
+                            focusBorderColor="teal.500"
+                          />
+                          <FormErrorMessage>
+                            {form.errors.estimatedTime}
+                          </FormErrorMessage>
+                        </FormControl>
+                      )}
+                    </Field>
+                  </Stack>
                   <Stack my="4">
                     <Button
                       colorScheme="teal"

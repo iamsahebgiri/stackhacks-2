@@ -33,6 +33,7 @@ if (isProduction) {
 require("./models/User");
 require("./models/Category");
 require("./models/FoodItem");
+require("./models/Order");
 require("./config/passport");
 
 app.use(require("./routes"));

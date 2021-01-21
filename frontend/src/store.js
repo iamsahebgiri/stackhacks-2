@@ -29,7 +29,7 @@ const store = createStore({
       });
   }),
   foodItems: [],
-  flushFoodItem: action((state) => {
+  flushFoodItems: action((state) => {
     state.foodItems = [];
   }),
   deleteFoodItem: action((state, id) => {
@@ -39,7 +39,7 @@ const store = createStore({
     state.foodItems.push(payload);
   }),
   getAllFoodItems: thunk((actions, payload) => {
-    actions.flushFoodItem();
+    actions.flushFoodItems();
     axios
       .get("http://localhost:3030/api/fooditems")
       .then((response) => {
@@ -53,7 +53,7 @@ const store = createStore({
       });
   }),
   getFoodItemsByMe: thunk((actions, payload) => {
-    actions.flushFoodItem();
+    actions.flushFoodItems();
     axios
       .get("http://localhost:3030/api/fooditems/me", {
         headers: {
@@ -62,9 +62,69 @@ const store = createStore({
       })
       .then((response) => {
         const foodItems = response.data.foodItems;
-        console.log(response.data)
         foodItems.map((foodItem) => {
           actions.addFoodItem(foodItem);
+        });
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
+  }),
+  orders: [],
+  flushOrders: action((state) => {
+    state.orders = [];
+  }),
+  deleteOrder: action((state, id) => {
+    state.orders = state.orders.filter((order) => order.id !== id);
+  }),
+  updateOrder: action((state, payload) => {
+    state.orders = state.orders.map((order) => {
+      if (payload.id === order.id) {
+        return {
+          ...order,
+          status: payload.status,
+          estimatedTime:`${payload.estimatedTime} min` ,
+        };
+      }
+      return order;
+    });
+  }),
+  addOrder: action((state, payload) => {
+    state.orders.push(payload);
+  }),
+  getAllOrders: thunk((actions, payload) => {
+    actions.flushOrders();
+    axios
+      .get("http://localhost:3030/api/orders")
+      .then((response) => {
+        const orders = response.data.orders;
+        orders.map((order) => {
+          actions.addOrder({
+            foodItem: order.item.name,
+            orderedBy: order.whoOrdered.username,
+            status: order.status,
+            estimatedTime: `${order.estimatedTime} min`,
+            id: order._id,
+          });
+        });
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
+  }),
+  getOrdersByMe: thunk((actions, payload) => {
+    actions.flushOrders();
+    axios
+      .get("http://localhost:3030/api/orders/me", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((response) => {
+        const orders = response.data.orders;
+        console.log(response.data.orders);
+        orders.map((order) => {
+          actions.addOrder(order);
         });
       })
       .catch((error) => {

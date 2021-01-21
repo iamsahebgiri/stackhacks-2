@@ -30,15 +30,15 @@ function Home() {
             </Stat>
             <Stat>
               <Box shadow="sm" p="6" rounded="md" bg="white">
-                <StatLabel>Orders</StatLabel>
+                <StatLabel>Total Orders</StatLabel>
                 <StatNumber>58</StatNumber>
                 <StatHelpText>Feb 12 - Feb 28</StatHelpText>
               </Box>
             </Stat>
             <Stat>
               <Box shadow="sm" p="6" rounded="md" bg="white">
-                <StatLabel>Sales</StatLabel>
-                <StatNumber>₹ 0.00</StatNumber>
+                <StatLabel>Unfullfilled Orders</StatLabel>
+                <StatNumber>10</StatNumber>
                 <StatHelpText>Feb 12 - Feb 28</StatHelpText>
               </Box>
             </Stat>
