@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { useStoreActions, useStoreState } from "easy-peasy";
 
 const FoodItem = ({
   id,
@@ -25,6 +26,7 @@ const FoodItem = ({
 }) => {
   const toast = createStandaloneToast();
   const router = useRouter();
+  const deleteFoodItem = useStoreActions((actions) => actions.deleteFoodItem);
   return (
     <Flex
       width="500px"
@@ -80,7 +82,39 @@ const FoodItem = ({
                 >
                   Edit
                 </Button>
-                <Button size="sm" colorScheme="red" width="120px">
+                <Button size="sm" colorScheme="red" width="120px" onClick={() => {
+                  axios
+                  .delete(`http://localhost:3030/api/fooditems/${id}`, {
+                    headers: {
+                      Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                  })
+                  .then((response) => {
+                    console.log(response.data);
+                    toast({
+                      position: "top-right",
+                      title: "Food deleted successfully. ",
+                      description: response.data.message,
+                      status: "success",
+                      duration: 9000,
+                      isClosable: true,
+                    });
+                    router.push("/admin/items");
+                  })
+                  .catch((error) => {
+                    console.log(error.response);
+                    toast({
+                      position: "top-right",
+                      title: "An error occured",
+                      description: "Sorry for inconvenience",
+                      status: "error",
+                      duration: 9000,
+                      isClosable: true,
+                    });
+                  });
+                  deleteFoodItem(id);
+
+                }}>
                   Delete
                 </Button>
               </>

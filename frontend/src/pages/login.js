@@ -17,7 +17,7 @@ import {
   Text,
   Flex,
   Spacer,
-  createStandaloneToast
+  createStandaloneToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { Container } from "../components/Container";
@@ -44,9 +44,14 @@ const SigninForm = () => {
           })
           .then((response) => {
             actions.setSubmitting(false);
-            console.log(response.data.user.token);
+            // console.log(response.data.user.token);
+            localStorage.setItem("user", JSON.stringify(response.data.user));
             localStorage.setItem("token", response.data.user.token);
-            router.push("/home");
+            if (response.data.user.userType === "employee") {
+              router.push("/home");
+            } else {
+              router.push("/admin/home");
+            }
           })
           .catch((error) => {
             const errors = error.response.data.errors;
@@ -58,9 +63,9 @@ const SigninForm = () => {
                 status: "error",
                 duration: 9000,
                 isClosable: true,
-              })
+              });
             }
-            
+
             actions.setSubmitting(false);
           });
       }}

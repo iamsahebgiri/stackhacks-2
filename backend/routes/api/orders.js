@@ -51,6 +51,25 @@ router.get("/me", auth.required, (req, res, next) => {
 });
 
 /**
+ * GET /orders/admin
+ * Get all orders created by an user.
+ */
+router.get("/admin", auth.required, (req, res, next) => {
+  Order.find({})
+    .populate({
+      path: "item",
+      match: { userCreated: { $eq: req.payload.id } },
+    })
+    .populate("whoOrdered", "username")
+    .then((orders) => {
+      const docs = orders.filter((order) => order.item !== null);
+      console.log(docs);
+      return res.json({ orders: docs });
+    })
+    .catch(next);
+});
+
+/**
  * PUT /orders/:orderId
  * Update order information.
  */

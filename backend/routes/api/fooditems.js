@@ -4,33 +4,8 @@ const validator = require("validator");
 const fs = require("fs");
 const auth = require("../../middleware/auth");
 const FoodItem = mongoose.model("FoodItem");
-const multer = require("multer");
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./uploads/");
-  },
-  filename: function (req, file, cb) {
-    cb(null, `${Date.now()} ${file.originalname}`);
-  },
-});
-
-const fileFilter = (req, file, cb) => {
-  // reject a file
-  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
-    cb(null, true);
-  } else {
-    cb(null, false);
-  }
-};
-
-const upload = multer({
-  storage: storage,
-  limits: {
-    fileSize: 1024 * 1024 * 2,
-  },
-  fileFilter: fileFilter,
-});
+const Order = mongoose.model("Order");
+const upload = require("../../middleware/multer");
 
 /**
  * POST /fooditems/create
@@ -160,7 +135,9 @@ router.delete("/:foodItemId", auth.required, (req, res, next) => {
   FoodItem.findOneAndDelete({ _id: req.params.foodItemId })
     .then((docs) => {
       fs.unlinkSync(`./${docs.picture}`);
-      return res.json({ message: "food item deleted successfully." });
+      Order.deleteMany({ item: req.params.foodItemId }).then(() => {
+        return res.json({ message: "food item deleted successfully." });
+      });
     })
     .catch(next);
 });

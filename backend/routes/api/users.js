@@ -3,6 +3,7 @@ const router = require("express").Router();
 const passport = require("passport");
 const validator = require("validator");
 const auth = require("../../middleware/auth");
+const upload = require("../../middleware/multer");
 const User = mongoose.model("User");
 
 /**
@@ -20,8 +21,8 @@ router.post("/users/signup", (req, res, next) => {
   if (!validator.isLength(req.body.user.password, { min: 8 })) {
     errors.password = "password must be at least 8 characters long.";
   }
-  
-  if(!userType.includes(req.body.user.userType)) {
+
+  if (!userType.includes(req.body.user.userType)) {
     errors.userType = "user can be either an employee or a vendor.";
   }
 
@@ -127,6 +128,33 @@ router.put("/users/account", auth.required, (req, res, next) => {
     })
     .catch(next);
 });
+
+/**
+ * PUT /users/account/profilePicture
+ * Update account information.
+ */
+router.put(
+  "/users/account/profilePicture",
+  auth.required,
+  upload.single("profilePicture"),
+  (req, res, next) => {
+    User.findById(req.payload.id)
+      .then((user) => {
+        if (!user) {
+          return res.sendStatus(401);
+        }
+
+        if (typeof req.file.path !== "undefined") {
+          user.extraInfo.profilePicture = req.file.path;
+        }
+
+        return user.save().then((user) => {
+          return res.json({ user: user.toAuthJSON() });
+        });
+      })
+      .catch(next);
+  }
+);
 
 /**
  * POST /users/account/delete

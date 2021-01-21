@@ -44,7 +44,11 @@ function DashboardShell(props) {
   useEffect(() => {
     if (!isAuthenticated()) {
       router.push("/login");
-    }
+    } 
+
+    // if(JSON.parse(localStorage.getItem("user")).userType === "employee") {
+    //   router.push("/home");
+    // }
   }, []);
   return (
     <Box>

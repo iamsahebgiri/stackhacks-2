@@ -23,7 +23,7 @@ function Items() {
 
   return (
     <DashboardShell>
-      <Flex p="6" flex="1" direction="column" bg="gray.50">
+      <Flex p="6" flex="1" direction="column" bg="gray.50" minH="100vh">
         <Stack
           direction={"row"}
           borderBottom="1px"

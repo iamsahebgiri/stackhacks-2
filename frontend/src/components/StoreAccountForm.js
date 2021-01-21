@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Field, Form, Formik } from "formik";
 import {
   Box,
@@ -18,13 +18,18 @@ import {
   Spacer,
   createStandaloneToast,
 } from "@chakra-ui/react";
+import axios from "axios";
 import StoreAccountSchema from "../../schema/StoreAccountSchema";
 
 function StoreAccountForm() {
   const [isDisabled, setIsDisabled] = useState(true);
   const handleClick = () => setShow(!show);
   const toast = createStandaloneToast();
+  const [user, setUser] = useState({});
   // const router = useRouter();
+  useEffect(() => {
+    setUser(JSON.parse(localStorage.getItem("user")));
+  }, []);
   return (
     <>
       <Flex>
@@ -33,39 +38,53 @@ function StoreAccountForm() {
         </Flex>
         <Box shadow="sm" width="70%" bg="white" rounded="md" p="4">
           <Formik
+            enableReinitialize={true}
             initialValues={{
-              storeName: "",
-              shortDescription: "",
+              storeName: typeof user !== null ? user.extraInfo?.name : "",
+              shortDescription: typeof user !== null ? user.extraInfo?.about : "",
             }}
             validationSchema={StoreAccountSchema}
             onSubmit={(values, actions) => {
-              console.log(values);
-              // axios
-              //   .post("http://localhost:3030/api/users/login", {
-              //     user: {
-              //       ...values,
-              //     },
-              //   })
-              //   .then((response) => {
-              //     actions.setSubmitting(false);
-              //     console.log(response.data.user.token);
-              //     localStorage.setItem("token", response.data.user.token);
-              //     router.push("/home");
-              //   })
-              //   .catch((error) => {
-              //     const errors = error.response.data.errors;
-              //     for (let key in errors) {
-              //       toast({
-              //         position: "bottom-left",
-              //         title: "An error occurred.",
-              //         description: errors[key],
-              //         status: "error",
-              //         duration: 9000,
-              //         isClosable: true,
-              //       })
-              //     }
-              //     actions.setSubmitting(false);
-              //   });
+              // console.log();
+              const data = {
+                user: {
+                  extraInfo: {
+                    name: values.storeName,
+                    about: values.shortDescription,
+                  },
+                },
+              };
+              axios
+                .put("http://localhost:3030/api/users/account", data, {
+                  headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                  },
+                })
+                .then((response) => {
+                  actions.setSubmitting(false);
+                  console.log(response.data);
+                  toast({
+                    position: "bottom-left",
+                    title: "Store has been updated.",
+                    description: "Store info saved successfully.",
+                    status: "success",
+                    duration: 9000,
+                    isClosable: true,
+                  });
+                  // localStorage.setItem("token", response.data.user.token);
+                  // router.push("/home");
+                })
+                .catch((error) => {
+                  toast({
+                    position: "bottom-left",
+                    title: "An error occurred.",
+                    description: "Sorry for inconvenience.",
+                    status: "error",
+                    duration: 9000,
+                    isClosable: true,
+                  });
+                  actions.setSubmitting(false);
+                });
             }}
           >
             {(props) => (
@@ -123,8 +142,8 @@ function StoreAccountForm() {
                       isLoading={props.isSubmitting}
                       onClick={() => {
                         setIsDisabled((state) => !state);
-                        if(!isDisabled) {
-                            props.submitForm()
+                        if (!isDisabled) {
+                          props.submitForm();
                         }
                       }}
                     >

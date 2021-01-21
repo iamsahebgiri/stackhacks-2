@@ -131,6 +131,31 @@ const store = createStore({
         console.log(error.response);
       });
   }),
+  getAllOrdersByAdmin: thunk((actions, payload) => {
+    actions.flushOrders();
+    axios
+      .get("http://localhost:3030/api/orders/admin", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((response) => {
+        const orders = response.data.orders;
+        console.log(response.data.orders);
+        orders.map((order) => {
+          actions.addOrder({
+            foodItem: order.item.name,
+            orderedBy: order.whoOrdered.username,
+            status: order.status,
+            estimatedTime: `${order.estimatedTime} min`,
+            id: order._id,
+          });
+        });
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
+  }),
 });
 
 export default store;

@@ -27,7 +27,7 @@ import EditOrderModal from "./EditOrderModal";
 function OrdersTable() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const data = useStoreState((state) => state.orders);
-  const getAllOrders = useStoreActions((actions) => actions.getAllOrders);
+  const getAllOrdersByAdmin = useStoreActions((actions) => actions.getAllOrdersByAdmin);
   const [filterInput, setFilterInput] = useState("");
   const [id, setId] = useState("");
 
@@ -58,7 +58,7 @@ function OrdersTable() {
   );
 
   useEffect(() => {
-    getAllOrders();
+    getAllOrdersByAdmin();
   }, []);
 
   const handleFilterChange = (e) => {
