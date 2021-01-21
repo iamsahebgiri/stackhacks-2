@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Field, Form, Formik } from "formik";
 import {
   Box,
@@ -19,17 +19,21 @@ import {
   createStandaloneToast,
 } from "@chakra-ui/react";
 import axios from "axios";
+import { useStoreActions, useStoreState } from "easy-peasy";
 import StoreAccountSchema from "../../schema/StoreAccountSchema";
 
 function StoreAccountForm() {
+  const user = useStoreState((state) => state.user);
+  const getUser = useStoreActions((actions) => actions.getUser);
   const [isDisabled, setIsDisabled] = useState(true);
   const handleClick = () => setShow(!show);
   const toast = createStandaloneToast();
-  const [user, setUser] = useState({});
   // const router = useRouter();
+
   useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("user")));
+    getUser();
   }, []);
+
   return (
     <>
       <Flex>
@@ -40,18 +44,16 @@ function StoreAccountForm() {
           <Formik
             enableReinitialize={true}
             initialValues={{
-              storeName: typeof user !== null ? user.extraInfo?.name : "",
-              shortDescription: typeof user !== null ? user.extraInfo?.about : "",
+              storeName: typeof user !== null ? user.name : "",
+              shortDescription: typeof user !== null ? user.about : "",
             }}
             validationSchema={StoreAccountSchema}
             onSubmit={(values, actions) => {
               // console.log();
               const data = {
                 user: {
-                  extraInfo: {
-                    name: values.storeName,
-                    about: values.shortDescription,
-                  },
+                  name: values.storeName,
+                  about: values.shortDescription,
                 },
               };
               axios
@@ -62,7 +64,7 @@ function StoreAccountForm() {
                 })
                 .then((response) => {
                   actions.setSubmitting(false);
-                  console.log(response.data);
+                  console.log(response.data.user);
                   toast({
                     position: "bottom-left",
                     title: "Store has been updated.",

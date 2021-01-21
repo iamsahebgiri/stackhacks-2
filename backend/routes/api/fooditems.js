@@ -48,7 +48,7 @@ router.post(
 router.get("/me", auth.required, (req, res, next) => {
   FoodItem.find({ userCreated: req.payload.id })
     .populate("category")
-    .populate("userCreated", "username")
+    .populate("userCreated", "username name")
     .then((foodItems) => {
       return res.json({ foodItems });
     })
@@ -62,7 +62,7 @@ router.get("/me", auth.required, (req, res, next) => {
 router.get("/", (req, res, next) => {
   FoodItem.find()
     .populate("category")
-    .populate("userCreated", "username")
+    .populate("userCreated", "username name")
     .then((foodItems) => {
       return res.json({ foodItems });
     })
@@ -76,7 +76,7 @@ router.get("/", (req, res, next) => {
 router.get("/:foodItemId", (req, res, next) => {
   FoodItem.findById(req.params.foodItemId)
     .populate("category")
-    .populate("userCreated", "username")
+    .populate("userCreated", "username name")
     .then((foodItem) => {
       return res.json({ foodItem });
     })

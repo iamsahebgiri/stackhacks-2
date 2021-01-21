@@ -83,7 +83,7 @@ const store = createStore({
         return {
           ...order,
           status: payload.status,
-          estimatedTime:`${payload.estimatedTime} min` ,
+          estimatedTime: `${payload.estimatedTime} min`,
         };
       }
       return order;
@@ -145,12 +145,39 @@ const store = createStore({
         orders.map((order) => {
           actions.addOrder({
             foodItem: order.item.name,
-            orderedBy: order.whoOrdered.username,
+            orderedBy:
+              order.whoOrdered.name !== undefined
+                ? order.whoOrdered.name
+                : order.whoOrdered.username,
             status: order.status,
             estimatedTime: `${order.estimatedTime} min`,
             id: order._id,
           });
         });
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
+  }),
+  user: {},
+  flushUser: action((state) => {
+    state.user = {};
+  }),
+  addUser: action((state, payload) => {
+    state.user = payload;
+  }),
+  getUser: thunk((actions, payload) => {
+    actions.flushUser();
+    axios
+      .get("http://localhost:3030/api/users/account", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((response) => {
+        console.log(response.data.user);
+        localStorage.setItem("token", response.data.user.token);
+        actions.addUser(response.data.user);
       })
       .catch((error) => {
         console.log(error.response);

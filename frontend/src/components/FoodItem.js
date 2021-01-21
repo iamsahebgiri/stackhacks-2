@@ -64,7 +64,11 @@ const FoodItem = ({
             <Text display="inline-block" color="gray.600" mr="1">
               By
             </Text>
-            <Text>{userCreated.username}</Text>
+            <Text>
+              {userCreated.name !== null
+                ? userCreated.name
+                : userCreated.username}
+            </Text>
           </Flex>
           <Flex>
             {isEditable ? (
@@ -82,39 +86,45 @@ const FoodItem = ({
                 >
                   Edit
                 </Button>
-                <Button size="sm" colorScheme="red" width="120px" onClick={() => {
-                  axios
-                  .delete(`http://localhost:3030/api/fooditems/${id}`, {
-                    headers: {
-                      Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    },
-                  })
-                  .then((response) => {
-                    console.log(response.data);
-                    toast({
-                      position: "top-right",
-                      title: "Food deleted successfully. ",
-                      description: response.data.message,
-                      status: "success",
-                      duration: 9000,
-                      isClosable: true,
-                    });
-                    router.push("/admin/items");
-                  })
-                  .catch((error) => {
-                    console.log(error.response);
-                    toast({
-                      position: "top-right",
-                      title: "An error occured",
-                      description: "Sorry for inconvenience",
-                      status: "error",
-                      duration: 9000,
-                      isClosable: true,
-                    });
-                  });
-                  deleteFoodItem(id);
-
-                }}>
+                <Button
+                  size="sm"
+                  colorScheme="red"
+                  width="120px"
+                  onClick={() => {
+                    axios
+                      .delete(`http://localhost:3030/api/fooditems/${id}`, {
+                        headers: {
+                          Authorization: `Bearer ${localStorage.getItem(
+                            "token"
+                          )}`,
+                        },
+                      })
+                      .then((response) => {
+                        console.log(response.data);
+                        toast({
+                          position: "top-right",
+                          title: "Food deleted successfully. ",
+                          description: response.data.message,
+                          status: "success",
+                          duration: 9000,
+                          isClosable: true,
+                        });
+                        router.push("/admin/items");
+                      })
+                      .catch((error) => {
+                        console.log(error.response);
+                        toast({
+                          position: "top-right",
+                          title: "An error occured",
+                          description: "Sorry for inconvenience",
+                          status: "error",
+                          duration: 9000,
+                          isClosable: true,
+                        });
+                      });
+                    deleteFoodItem(id);
+                  }}
+                >
                   Delete
                 </Button>
               </>

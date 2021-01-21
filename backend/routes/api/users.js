@@ -5,6 +5,7 @@ const validator = require("validator");
 const auth = require("../../middleware/auth");
 const upload = require("../../middleware/multer");
 const User = mongoose.model("User");
+const FoodItem = mongoose.model("FoodItem");
 
 /**
  * POST /users/signup
@@ -84,7 +85,7 @@ router.get("/users/account", auth.required, (req, res, next) => {
         return res.sendStatus(401);
       }
 
-      return res.json({ account: user.toAuthJSON() });
+      return res.json({ user: user.toAuthJSON() });
     })
     .catch(next);
 });
@@ -101,6 +102,18 @@ router.put("/users/account", auth.required, (req, res, next) => {
       }
 
       // only update fields that were actually passed...
+      if (typeof req.body.user.username !== "undefined") {
+        user.username = req.body.user.username;
+      }
+
+      if (typeof req.body.user.name !== "undefined") {
+        user.name = req.body.user.name;
+      }
+
+      if (typeof req.body.user.about !== "undefined") {
+        user.about = req.body.user.about;
+      }
+
       if (typeof req.body.user.username !== "undefined") {
         user.username = req.body.user.username;
       }
@@ -145,7 +158,7 @@ router.put(
         }
 
         if (typeof req.file.path !== "undefined") {
-          user.extraInfo.profilePicture = req.file.path;
+          user.profilePicture = req.file.path;
         }
 
         return user.save().then((user) => {
@@ -157,16 +170,14 @@ router.put(
 );
 
 /**
- * POST /users/account/delete
+ * DELETE /users/account/delete
  * Delete user account.
  */
-router.post("/users/account/delete", auth.required, (req, res, next) => {
+router.delete("/users/account/delete", auth.required, (req, res, next) => {
   User.deleteOne({ _id: req.payload.id })
     .then(() => {
       return res.status(200).json({
-        success: {
-          message: "your account has been deleted.",
-        },
+        message: "your account has been deleted.",
       });
     })
     .catch(next);

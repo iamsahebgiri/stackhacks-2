@@ -103,7 +103,7 @@ function Header() {
               <MenuItem
                 fontSize="sm"
                 onClick={() => {
-                  router.push("/admin/account");
+                  router.push("/account");
                 }}
               >
                 Settings
@@ -112,6 +112,7 @@ function Header() {
                 fontSize="sm"
                 onClick={() => {
                   localStorage.removeItem("token");
+                  localStorage.removeItem("user");
                   router.push("/login");
                 }}
               >

@@ -46,9 +46,9 @@ function DashboardShell(props) {
       router.push("/login");
     } 
 
-    // if(JSON.parse(localStorage.getItem("user")).userType === "employee") {
-    //   router.push("/home");
-    // }
+    if(JSON.parse(localStorage.getItem("user")).userType === "employee") {
+      router.push("/home");
+    }
   }, []);
   return (
     <Box>
@@ -85,6 +85,7 @@ function DashboardShell(props) {
                   fontSize="sm"
                   onClick={() => {
                     localStorage.removeItem("token");
+                    localStorage.removeItem("user");
                     router.push("/login");
                   }}
                 >

@@ -29,7 +29,7 @@ router.post("/create", auth.required, (req, res, next) => {
 router.get("/", (req, res, next) => {
   Order.find()
     .populate("item", "name")
-    .populate("whoOrdered", "username")
+    .populate("whoOrdered", "username extraInfo")
     .then((orders) => {
       return res.json({ orders });
     })
@@ -43,7 +43,7 @@ router.get("/", (req, res, next) => {
 router.get("/me", auth.required, (req, res, next) => {
   Order.find({ whoOrdered: req.payload.id })
     .populate("item", "name")
-    .populate("whoOrdered", "username")
+    .populate("whoOrdered", "username extraInfo")
     .then((orders) => {
       return res.json({ orders });
     })
@@ -60,10 +60,9 @@ router.get("/admin", auth.required, (req, res, next) => {
       path: "item",
       match: { userCreated: { $eq: req.payload.id } },
     })
-    .populate("whoOrdered", "username")
+    .populate("whoOrdered", "username name")
     .then((orders) => {
       const docs = orders.filter((order) => order.item !== null);
-      console.log(docs);
       return res.json({ orders: docs });
     })
     .catch(next);
