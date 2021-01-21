@@ -18,9 +18,9 @@ function Store() {
   return (
     <Box>
       <Header />
-      <Box bg="gray.50">
+      <Box bg="gray.50" minH="100vh">
         <Flex flexDir="column" alignItems="center" py="4">
-          <Flex width="500px" py="4" alignItems="center" justifyContent="space-between">
+          <Flex width="xl" py="4" alignItems="center" justifyContent="space-between">
             <Heading size="md">Filter</Heading>
             <Box>
               <Select placeholder="Select Category">

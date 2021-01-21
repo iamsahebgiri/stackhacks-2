@@ -17,11 +17,11 @@ import {
 function EmployeeAccountForm() {
   const [isDisabled, setIsDisabled] = useState(true);
   return (
-    <Flex>
-      <Flex width="30%" fontWeight="600">
+    <Flex flexDirection="column">
+      <Flex fontWeight="600" mb="4">
         Account Settings
       </Flex>
-      <Box shadow="sm" width="70%" bg="white" rounded="md" p="4">
+      <Box shadow="sm" bg="white" rounded="md" p="4">
         <Stack spacing="4">
           <Stack spacing="4" direction="row">
             <FormControl id="email" mr="4">
