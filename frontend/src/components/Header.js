@@ -98,7 +98,7 @@ function Header() {
           <MenuButton>
             <Avatar
               size="sm"
-              fallbackSrc="https://via.placeholder.com/150/000000/FFFFFF/"
+              
               src={`http://localhost:3030/${user?.profilePicture}`}
             />
           </MenuButton>

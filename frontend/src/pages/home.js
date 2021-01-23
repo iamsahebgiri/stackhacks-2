@@ -53,7 +53,7 @@ const Queue = () => {
     </Flex>
   );
 };
-const Order = ({order}) => {
+const Order = ({ order }) => {
   return (
     <Flex
       height="80px"
@@ -81,9 +81,7 @@ const Order = ({order}) => {
         </Stack>
       </Flex>
       <Box>
-       <Badge>
-         {order.status}
-       </Badge>
+        <Badge>{order.status}</Badge>
       </Box>
     </Flex>
   );
@@ -134,16 +132,23 @@ function Home() {
           >
             Your Orders
           </Heading>
-          {orders.map((order) => (
-            <Order key={order._id} order={order} />
-          ))}
-          <Box p="28">
-            <Image src="/assets/svg/undraw_Select_re_3kbd.svg" />
-            <Text textAlign="center" color="gray.500" mt="6">
-              You have not placed any orders yet.
-            </Text>
-          </Box>
-          <Flex
+          <Flex justifyContent="center" py="4">
+            <Stack spacing="4">
+              {orders.map((order) => (
+                <Order key={order._id} order={order} />
+              ))}
+            </Stack>
+          </Flex>
+          {Object.keys(orders).length === 0 && (
+            <Box p="28">
+              <Image src="/assets/svg/undraw_Select_re_3kbd.svg" />
+              <Text textAlign="center" color="gray.500" mt="6">
+                You have not placed any orders yet.
+              </Text>
+            </Box>
+          )}
+
+          {/* <Flex
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
@@ -151,7 +156,7 @@ function Home() {
           >
             <Icon as={IoTimerOutline} h="12" w="12" color="gray.400" />
             <Text mt="2">Food will be cooked with in 30:00 min</Text>
-          </Flex>
+          </Flex> */}
         </Box>
       </Flex>
     </>
