@@ -68,7 +68,8 @@ function DashboardShell(props) {
               <Avatar
                 size="sm"
                 name="Dan Abrahmov"
-                src="https://bit.ly/dan-abramov"
+                fallbackSrc="https://via.placeholder.com/100/000000/FFFFFF/"
+                src={`http://localhost:3030/${JSON.parse(localStorage.getItem("user"))?.profilePicture}`}
               />
             </MenuButton>
             <MenuList>

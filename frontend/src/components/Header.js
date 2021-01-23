@@ -17,6 +17,7 @@ import NavItem from "./NavItem";
 import { RiHomeSmile2Fill } from "react-icons/ri";
 import { IoFastFood, IoPersonCircle, IoAlbums } from "react-icons/io5";
 import isAuthenticated from "../../utils/isAuthenticated";
+import { useStoreActions, useStoreState } from "easy-peasy";
 
 const HeaderNavItem = (props) => {
   return (
@@ -33,14 +34,11 @@ const HeaderNavItem = (props) => {
           bg: props.isActive ? "gray.800" : "gray.600",
         }}
       >
-        {/* <Icon
-          as={props.icon}
-          w={5}
-          h={5}
-          color={props.isActive ? "white" : "gray.500"}
-          mr={4}
-        /> */}
-        <Text fontWeight="500" fontSize="sm" color={props.isActive ? "white" : "gray.300"}>
+        <Text
+          fontWeight="500"
+          fontSize="sm"
+          color={props.isActive ? "white" : "gray.300"}
+        >
           {props.children}
         </Text>
       </Flex>
@@ -50,6 +48,8 @@ const HeaderNavItem = (props) => {
 
 function Header() {
   const router = useRouter();
+  const getUser = useStoreActions((actions) => actions.getUser);
+  const user = useStoreState((state) => state.user);
   const navs = [
     {
       name: "Home",
@@ -67,6 +67,10 @@ function Header() {
       href: "account",
     },
   ];
+
+  // useEffect(() => {
+  //   getUser();
+  // }, []);
   return (
     <Flex
       bg="gray.700"
@@ -94,8 +98,8 @@ function Header() {
           <MenuButton>
             <Avatar
               size="sm"
-              name="Dan Abrahmov"
-              src="https://bit.ly/dan-abramov"
+              fallbackSrc="https://via.placeholder.com/150/000000/FFFFFF/"
+              src={`http://localhost:3030/${user?.profilePicture}`}
             />
           </MenuButton>
           <MenuList>
