@@ -5,6 +5,7 @@ const errorhandler = require("errorhandler");
 const mongoose = require("mongoose");
 
 const app = express();
+require('dotenv').config();
 
 app.use(cors());
 
